@@ -17,6 +17,7 @@
     "visit-prep.html",
     "reset.html",
     "tools.html",
+    "privacy.html",
   ];
 
   // Everyday words readers type → words used on the site.

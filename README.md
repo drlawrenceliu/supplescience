@@ -6,7 +6,7 @@ plus the **21-Day Heart & Metabolism Reset** self-tracking program.
 ## Live site
 
 https://supplescience.github.io/ (GitHub organization `supplescience`, repo `supplescience.github.io`).
-Currently hidden from search engines (`noindex`).
+Public and indexable (`robots.txt`, `sitemap.xml`). Privacy policy: `privacy.html`.
 
 ## Pages
 - `index.html` — home; `guides.html` — all guides (topic filters); `tools.html` — tools hub
@@ -23,6 +23,4 @@ python3 -m http.server 8000
 Open http://localhost:8000
 
 ## Before going public
-1. Remove the `noindex` meta tag from every page.
 2. Consider a custom domain (add it to this repo's Pages settings) and a separate Google Analytics property.
-3. Add a privacy policy page.
