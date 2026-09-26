@@ -128,6 +128,7 @@ function initLookup() {
   const empty = document.getElementById("lookupEmpty");
   const gradeChips = [...document.querySelectorAll("[data-grade-filter]")];
   const quick = document.getElementById("lookupQuick");
+  if (!input || !results) return; // loaded on another page (e.g. by site search) — data only
   let gradeFilter = "";
 
   SUPPLEMENTS.forEach((item) => {

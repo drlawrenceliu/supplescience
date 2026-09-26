@@ -105,4 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initMenu();
   initToc();
   initGuideFilter();
+  // Site search (header box). Logic lives in search.js so pages stay light until it is used.
+  const search = document.createElement("script");
+  search.src = "./search.js";
+  search.defer = true;
+  document.head.appendChild(search);
 });
