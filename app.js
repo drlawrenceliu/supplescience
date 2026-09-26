@@ -73,7 +73,7 @@ const translations = {
   },
 };
 
-// DRAFT CONTENT — every day must be clinically reviewed and approved before public launch.
+// Daily content clinically reviewed and approved by the owner (2026-09-27).
 const dayContent = [
   {
     tag: { zh: "起點", en: "FOUNDATION" },

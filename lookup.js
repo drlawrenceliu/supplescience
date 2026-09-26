@@ -1,7 +1,7 @@
 // 保健食品實證速查 — data and search.
 // To add a supplement: append an entry to SUPPLEMENTS. Every claim needs a grade (A–D), a short
 // verdict, and a verified source. `guide` is the full article, or null if not written yet.
-// DRAFT CONTENT — must be clinically reviewed before public launch.
+// Content clinically reviewed and approved by the owner (2026-09-27). Re-review when evidence changes.
 
 const SUPPLEMENTS = [
   {

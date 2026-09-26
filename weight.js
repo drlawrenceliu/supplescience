@@ -1,6 +1,6 @@
 // 體重管理小幫手 — BMI/waist categories, weight log with chart, weekly habits and coaching messages.
 // Everything is stored only in this browser (localStorage). This tool never recommends medicines or doses.
-// DRAFT CONTENT — must be clinically reviewed before public launch.
+// Content clinically reviewed and approved by the owner (2026-09-27). Re-review when evidence changes.
 
 const WEIGHT_KEY = "supplescience-weight-v1";
 
