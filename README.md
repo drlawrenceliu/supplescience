@@ -9,9 +9,12 @@ https://supplescience.github.io/ (GitHub organization `supplescience`, repo `sup
 Currently hidden from search engines (`noindex`).
 
 ## Pages
-- `index.html` — home and guide hub
-- `guide-glp1.html` — first evidence guide (draft, awaiting clinical review)
-- `reset.html` — 21-day tracker (data stays in the visitor's browser only)
+- `index.html` — home; `guides.html` — all guides (topic filters); `tools.html` — tools hub
+- Guides: `guide-glp1.html`, `guide-glp1-safety.html`, `guide-glp1-lifestyle.html` (GLP-1 parts 1–3),
+  `guide-fish-oil.html`, `guide-red-yeast-rice.html`, `guide-exercise.html`, `guide-nutrition.html`
+- Tools: `lookup.html` (supplement evidence lookup), `weight.html` (weight companion), `visit-prep.html`
+  (visit prep sheet), `reset.html` (21-day reset), nutrition calculator inside GLP-1 part 3
+- All reader data stays in the visitor's browser (localStorage). Google Analytics counts anonymous page views only.
 
 ## Run locally
 ```bash
@@ -19,8 +22,7 @@ python3 -m http.server 8000
 ```
 Open http://localhost:8000
 
-## Before public launch
-1. Clinically review and approve all guide and daily content.
-2. Choose and register the SuppleScience domain.
-3. Add a privacy policy and terms.
-4. Decide whether to self-host fonts (currently loaded from Google Fonts).
+## Before going public
+1. Remove the `noindex` meta tag from every page.
+2. Consider a custom domain (add it to this repo's Pages settings) and a separate Google Analytics property.
+3. Add a privacy policy page.
