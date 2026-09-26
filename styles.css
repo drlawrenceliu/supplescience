@@ -545,3 +545,30 @@ a.feature:hover .btn-primary { background: var(--brand); }
   .series-title { flex-basis: 100%; order: 3; }
   .series-next .arrow { display: none; }
 }
+
+/* ---------- Guides listing ---------- */
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.filter-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface); color: var(--ink-2); font-size: 14.5px; font-weight: 500; }
+.filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+.filter-chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
+.filter-chip .count { font-family: var(--mono); font-size: 12px; opacity: .7; }
+.filter-chip .count:empty { display: none; }
+.guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.guide-card { display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); text-decoration: none; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+.guide-card[hidden] { display: none; }
+a.guide-card:hover { border-color: var(--ink); transform: translateY(-3px); box-shadow: var(--shadow); }
+.guide-card-top { display: flex; flex-wrap: wrap; gap: 8px; }
+.guide-card h2 { font-size: 19px; font-weight: 700; line-height: 1.4; }
+.guide-card p { color: var(--ink-3); font-size: 14.5px; line-height: 1.7; }
+.guide-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); color: var(--ink-4); font-family: var(--mono); font-size: 12px; }
+.guide-card-foot .grades { display: inline-flex; gap: 4px; }
+.guide-card-foot .grade { width: 24px; height: 24px; flex-basis: 24px; border-radius: 7px; font-size: 12px; }
+.guide-card.is-soon { background: transparent; border-style: dashed; }
+.guide-card.is-soon h2 { color: var(--ink-3); }
+.section-more { margin-top: 28px; text-align: center; }
+@media (max-width: 1100px) { .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .guide-grid { grid-template-columns: minmax(0, 1fr); }
+  .filter-row { flex-wrap: nowrap; overflow-x: auto; margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
+  .filter-chip { flex: 0 0 auto; }
+}

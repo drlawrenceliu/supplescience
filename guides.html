@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh" data-title-zh="實證指南｜實證補給" data-title-en="Guides｜SuppleScience">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var l = "zh";
+        try { if (localStorage.getItem("supplescience-lang") === "en") l = "en"; } catch (e) {}
+        document.documentElement.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant";
+      })();
+    </script>
+    <title>實證指南｜實證補給</title>
+    <meta name="description" content="實證補給的所有健康指南：保健食品、GLP-1 與體重管理、運動與飲食。每篇都標示證據等級與參考文獻。" />
+    <meta name="theme-color" content="#0d2626" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="實證指南｜實證補給" />
+    <meta property="og:description" content="保健食品、GLP-1、運動與飲食——每篇都標示證據等級與參考文獻。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="實證補給 SuppleScience" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d2626'/%3E%3Cpath d='M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5' fill='none' stroke='%23c9f06b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='43' cy='19' r='4' fill='%23ee6c4f'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="./">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#0d2626" /><path d="M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5" fill="none" stroke="#c9f06b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="43" cy="19" r="4" fill="#ee6c4f" /></svg>
+          <span class="brand-text"><span class="brand-name">實證補給</span><span class="brand-sub">SUPPLESCIENCE</span></span>
+        </a>
+        <nav class="nav" id="siteNav" aria-label="Main">
+          <a href="./guides.html" aria-current="page"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./reset.html"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
+        </nav>
+        <div class="header-actions">
+          <button class="lang-toggle" type="button">EN</button>
+          <a class="btn btn-primary btn-sm" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the reset</span></a>
+          <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="article-hero">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="./"><span lang="zh-Hant">首頁</span><span lang="en">Home</span></a><span aria-hidden="true">/</span>
+            <span><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></span>
+          </nav>
+          <p class="eyebrow">Guides</p>
+          <h1><span lang="zh-Hant">實證指南</span><span lang="en">Evidence guides</span></h1>
+          <p class="article-dek">
+            <span lang="zh-Hant">每篇指南都會說明：證據有多強、適用在誰身上、哪些情況要先問醫師，並附上原始研究。</span>
+            <span lang="en">Every guide explains how strong the evidence is, who it applies to, and when to check with a clinician, with the original studies cited.</span>
+          </p>
+        </div>
+      </header>
+
+      <section class="section tight">
+        <div class="wrap">
+          <div class="filter-row" role="group" aria-label="Topic">
+            <button class="filter-chip" type="button" data-filter="all" aria-pressed="true"><span lang="zh-Hant">全部</span><span lang="en">All</span> <span class="count" data-count="all"></span></button>
+            <button class="filter-chip" type="button" data-filter="supplements" aria-pressed="false"><span lang="zh-Hant">保健食品</span><span lang="en">Supplements</span> <span class="count" data-count="supplements"></span></button>
+            <button class="filter-chip" type="button" data-filter="glp1" aria-pressed="false"><span lang="zh-Hant">GLP-1 與體重管理</span><span lang="en">GLP-1 &amp; weight</span> <span class="count" data-count="glp1"></span></button>
+            <button class="filter-chip" type="button" data-filter="exercise" aria-pressed="false"><span lang="zh-Hant">運動</span><span lang="en">Exercise</span> <span class="count" data-count="exercise"></span></button>
+            <button class="filter-chip" type="button" data-filter="nutrition" aria-pressed="false"><span lang="zh-Hant">飲食</span><span lang="en">Nutrition</span> <span class="count" data-count="nutrition"></span></button>
+          </div>
+
+          <div class="guide-grid" id="guideGrid">
+            <a class="guide-card" href="./guide-glp1.html" data-topic="glp1">
+              <div class="guide-card-top">
+                <span class="chip chip-live">GLP-1 · <span lang="zh-Hant">第 1 篇</span><span lang="en">Part 1</span></span>
+                <span class="chip chip-draft"><span lang="zh-Hant">草稿</span><span lang="en">Draft</span></span>
+              </div>
+              <h2><span lang="zh-Hant">GLP-1 減重藥物：開始之前要知道的 8 件事</span><span lang="en">GLP-1 weight-loss medicines: 8 things to know before you start</span></h2>
+              <p><span lang="zh-Hant">誰適合、效果多大（含台灣 STEP 12 資料）、副作用與警訊、肌肉流失，以及停藥或減量後會怎樣。</span><span lang="en">Who they are for, how well they work (including Taiwan’s STEP 12 data), side effects, muscle loss, and what happens when you stop or step down.</span></p>
+              <div class="guide-card-foot">
+                <span class="grades" aria-label="Evidence grades"><span class="grade grade-a">A</span><span class="grade grade-b">B</span></span>
+                <span><span lang="zh-Hant">約 12 分鐘</span><span lang="en">12 min</span></span>
+              </div>
+            </a>
+
+            <a class="guide-card" href="./guide-glp1-lifestyle.html" data-topic="glp1">
+              <div class="guide-card-top">
+                <span class="chip chip-live">GLP-1 · <span lang="zh-Hant">第 2 篇</span><span lang="en">Part 2</span></span>
+                <span class="chip chip-draft"><span lang="zh-Hant">草稿</span><span lang="en">Draft</span></span>
+              </div>
+              <h2><span lang="zh-Hant">GLP-1 治療期間：怎麼吃、怎麼動</span><span lang="en">During GLP-1 treatment: how to eat and move</span></h2>
+              <p><span lang="zh-Hant">蛋白質換算成台灣常見食物、減少腸胃不適的吃法、在家就能做的肌力訓練，以及為停藥後做準備。</span><span lang="en">Protein in everyday Taiwanese foods, eating to reduce stomach side effects, strength training at home, and preparing for life after the medicine.</span></p>
+              <div class="guide-card-foot">
+                <span class="grades" aria-label="Evidence grades"><span class="grade grade-b">B</span><span class="grade grade-c">C</span></span>
+                <span><span lang="zh-Hant">約 12 分鐘</span><span lang="en">12 min</span></span>
+              </div>
+            </a>
+
+            <a class="guide-card" href="./guide-fish-oil.html" data-topic="supplements">
+              <div class="guide-card-top">
+                <span class="chip chip-live"><span lang="zh-Hant">保健食品</span><span lang="en">Supplements</span></span>
+                <span class="chip chip-draft"><span lang="zh-Hant">草稿</span><span lang="en">Draft</span></span>
+              </div>
+              <h2><span lang="zh-Hant">魚油有沒有用？一般人與心血管病人差很多</span><span lang="en">Fish oil: who actually benefits</span></h2>
+              <p><span lang="zh-Hant">市售魚油無法預防一般人的心臟病；但心血管病人使用處方級高純度 EPA，重大心血管事件減少約 25%。</span><span lang="en">Ordinary fish oil does not prevent heart disease, but prescription pure EPA cuts major cardiovascular events by about 25% in people with heart disease.</span></p>
+              <div class="guide-card-foot">
+                <span class="grades" aria-label="Evidence grades"><span class="grade grade-a">A</span><span class="grade grade-d">D</span></span>
+                <span><span lang="zh-Hant">約 12 分鐘</span><span lang="en">12 min</span></span>
+              </div>
+            </a>
+
+            <a class="guide-card" href="./guide-red-yeast-rice.html" data-topic="supplements">
+              <div class="guide-card-top">
+                <span class="chip chip-live"><span lang="zh-Hant">保健食品</span><span lang="en">Supplements</span></span>
+                <span class="chip chip-draft"><span lang="zh-Hant">草稿</span><span lang="en">Draft</span></span>
+              </div>
+              <h2><span lang="zh-Hant">紅麴：能降膽固醇，為什麼不建議取代藥物？</span><span lang="en">Red yeast rice: it lowers cholesterol, so why not replace medicine?</span></h2>
+              <p><span lang="zh-Hant">Monacolin K 就是 lovastatin。產品品質差異大、心血管結果證據有限，也曾發生嚴重安全事件。台灣與國際指引怎麼說？</span><span lang="en">Monacolin K is lovastatin. Product quality varies, outcome evidence is limited, and there have been serious safety events. What guidelines say.</span></p>
+              <div class="guide-card-foot">
+                <span class="grades" aria-label="Evidence grades"><span class="grade grade-b">B</span><span class="grade grade-c">C</span><span class="grade grade-d">D</span></span>
+                <span><span lang="zh-Hant">約 10 分鐘</span><span lang="en">10 min</span></span>
+              </div>
+            </a>
+
+            <div class="guide-card is-soon" data-topic="exercise">
+              <div class="guide-card-top"><span class="chip chip-soon"><span lang="zh-Hant">運動・準備中</span><span lang="en">Exercise · coming soon</span></span></div>
+              <h2><span lang="zh-Hant">每週 150 分鐘，怎麼湊出來？</span><span lang="en">How to reach 150 minutes a week</span></h2>
+              <p><span lang="zh-Hant">有氧、肌力與久坐：從最新指引整理出最容易開始的做法。</span><span lang="en">Aerobic activity, strength, and sitting less: the easiest place to start, from current guidelines.</span></p>
+            </div>
+
+            <div class="guide-card is-soon" data-topic="nutrition">
+              <div class="guide-card-top"><span class="chip chip-soon"><span lang="zh-Hant">飲食・準備中</span><span lang="en">Nutrition · coming soon</span></span></div>
+              <h2><span lang="zh-Hant">不靠極端飲食的實用原則</span><span lang="en">Practical eating without extreme diets</span></h2>
+              <p><span lang="zh-Hant">蛋白質、纖維、鈉與加工食品：外食族也能做到的選擇。</span><span lang="en">Protein, fibre, sodium, and processed food: choices that work even when eating out.</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tight" id="safety">
+        <div class="wrap">
+          <div class="safety">
+            <span class="safety-icon" aria-hidden="true">!</span>
+            <div>
+              <h2><span lang="zh-Hant">本站提供健康教育，不是診斷或治療。</span><span lang="en">This site offers health education, not diagnosis or treatment.</span></h2>
+              <p>
+                <span lang="zh-Hant">請不要因為本站內容自行開始、停止或調整任何藥物。<strong>如果出現胸痛、嚴重呼吸困難、昏厥或其他緊急症狀，請立即撥打 119 或前往急診。</strong>若你有慢性病、懷孕，或曾被醫療人員限制活動，請依照自己的醫療計畫。</span>
+                <span lang="en">Do not start, stop, or change any medicine because of this site. <strong>If you have chest pain, severe shortness of breath, fainting, or another emergency symptom, call your local emergency number (119 in Taiwan) or go to an emergency department now.</strong> If you have a chronic condition, are pregnant, or have been told to limit activity, follow your own clinical plan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-legal" style="margin-top: 0; padding-top: 0; border-top: 0">
+          <span>© <span data-year>2026</span> SuppleScience / 實證補給</span>
+          <span><span lang="zh-Hant">獨立經營的健康教育網站，與任何醫療機構無關。</span><span lang="en">An independent health-education site, not affiliated with any healthcare institution.</span></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

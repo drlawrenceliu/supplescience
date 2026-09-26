@@ -67,6 +67,33 @@ function initToc() {
   });
 }
 
+// Guides page: topic filter chips. The chosen topic is kept in the URL (?topic=glp1)
+// so topic cards on the home page can link straight to a filtered list.
+function initGuideFilter() {
+  const grid = document.getElementById("guideGrid");
+  if (!grid) return;
+  const cards = [...grid.querySelectorAll("[data-topic]")];
+  const chips = [...document.querySelectorAll(".filter-chip")];
+  document.querySelectorAll("[data-count]").forEach((node) => {
+    const topic = node.dataset.count;
+    const live = cards.filter((card) => !card.classList.contains("is-soon") && (topic === "all" || card.dataset.topic === topic));
+    node.textContent = live.length;
+  });
+  const apply = (topic) => {
+    if (!chips.some((chip) => chip.dataset.filter === topic)) topic = "all";
+    chips.forEach((chip) => chip.setAttribute("aria-pressed", String(chip.dataset.filter === topic)));
+    cards.forEach((card) => {
+      card.hidden = topic !== "all" && card.dataset.topic !== topic;
+    });
+    const url = new URL(window.location.href);
+    if (topic === "all") url.searchParams.delete("topic");
+    else url.searchParams.set("topic", topic);
+    history.replaceState(null, "", url);
+  };
+  chips.forEach((chip) => chip.addEventListener("click", () => apply(chip.dataset.filter)));
+  apply(new URLSearchParams(window.location.search).get("topic") || "all");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   applyLang(getLang());
   document.querySelectorAll(".lang-toggle").forEach((button) => {
@@ -77,4 +104,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   initMenu();
   initToc();
+  initGuideFilter();
 });
