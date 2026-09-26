@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh" data-title-zh="體重管理小幫手｜實證補給" data-title-en="Weight companion｜SuppleScience">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var l = "zh";
+        try { if (localStorage.getItem("supplescience-lang") === "en") l = "en"; } catch (e) {}
+        document.documentElement.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant";
+      })();
+    </script>
+    <title>體重管理小幫手｜實證補給</title>
+    <meta name="description" content="計算 BMI 與腰圍分類、記錄體重變化並和大型研究平均值對照，每週陪你調整飲食、運動與睡眠。資料只存在你的裝置。" />
+    <meta name="theme-color" content="#0d2626" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="體重管理小幫手｜實證補給" />
+    <meta property="og:description" content="計算 BMI 與腰圍分類、記錄體重變化並和大型研究平均值對照，每週陪你調整飲食、運動與睡眠。資料只存在你的裝置。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="實證補給 SuppleScience" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d2626'/%3E%3Cpath d='M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5' fill='none' stroke='%23c9f06b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='43' cy='19' r='4' fill='%23ee6c4f'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./site.js"></script>
+    <script defer src="./weight.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="./">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#0d2626" /><path d="M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5" fill="none" stroke="#c9f06b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="43" cy="19" r="4" fill="#ee6c4f" /></svg>
+          <span class="brand-text"><span class="brand-name">實證補給</span><span class="brand-sub">SUPPLESCIENCE</span></span>
+        </a>
+        <nav class="nav" id="siteNav" aria-label="Main">
+          <a href="./guides.html"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./tools.html" aria-current="page"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
+          <a href="./reset.html"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
+        </nav>
+        <div class="header-actions">
+          <button class="lang-toggle" type="button">EN</button>
+          <a class="btn btn-primary btn-sm" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the reset</span></a>
+          <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="article-hero no-print">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="./"><span lang="zh-Hant">首頁</span><span lang="en">Home</span></a><span aria-hidden="true">/</span>
+            <a href="./tools.html"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a><span aria-hidden="true">/</span>
+            <span><span lang="zh-Hant">體重管理小幫手</span><span lang="en">Weight companion</span></span>
+          </nav>
+          <p class="eyebrow">Tool · Weight</p>
+          <h1><span lang="zh-Hant">體重管理小幫手</span><span lang="en">Weight companion</span></h1>
+          <p class="article-dek"><span lang="zh-Hant">算出 BMI 與腰圍分類、記錄體重變化，並和大型研究的平均結果對照。每週一個小目標，陪你把飲食、運動與睡眠慢慢調整好。</span><span lang="en">Check your BMI and waist, log your weight, compare it with large-trial averages, and build diet, activity and sleep habits one week at a time.</span></p>
+          <div class="article-meta"><span class="chip chip-draft"><span lang="zh-Hant">草稿・待臨床審閱</span><span lang="en">Draft · clinical review</span></span></div>
+          <p class="privacy-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2.5" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg><span lang="zh-Hant">資料只存在這台裝置的瀏覽器，不會上傳。</span><span lang="en">Saved only in this browser on this device.</span></p>
+        </div>
+      </header>
+      <section class="section tight">
+        <div class="wrap weight-layout">
+          <div class="weight-main">
+
+            <!-- Step 1: BMI & waist -->
+            <div class="prep-block" id="bmi">
+              <div class="block-head"><h2><span class="step">1</span><span lang="zh-Hant">BMI 與腰圍</span><span lang="en">BMI &amp; waist</span></h2></div>
+              <form class="bmi-form" id="bmiForm">
+                <fieldset class="sex-field">
+                  <legend><span lang="zh-Hant">生理性別</span><span lang="en">Sex</span></legend>
+                  <label><input type="radio" name="sex" value="m" /> <span lang="zh-Hant">男</span><span lang="en">Male</span></label>
+                  <label><input type="radio" name="sex" value="f" /> <span lang="zh-Hant">女</span><span lang="en">Female</span></label>
+                </fieldset>
+                <label class="field" for="heightInput"><span><span lang="zh-Hant">身高</span><span lang="en">Height</span></span><span class="input-unit"><input id="heightInput" type="number" inputmode="decimal" min="120" max="220" step="0.1" placeholder="—" /><small>cm</small></span></label>
+                <label class="field" for="bmiWeightInput"><span><span lang="zh-Hant">體重</span><span lang="en">Weight</span></span><span class="input-unit"><input id="bmiWeightInput" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="—" /><small>kg</small></span></label>
+                <label class="field" for="waistInput"><span><span lang="zh-Hant">腰圍</span><span lang="en">Waist</span></span><span class="input-unit"><input id="waistInput" type="number" inputmode="decimal" min="40" max="200" step="0.5" placeholder="—" /><small>cm</small></span></label>
+              </form>
+              <p class="calc-note"><span lang="zh-Hant">腰圍量法：站立、雙腳與肩同寬，在吐氣結束時，以皮尺繞過肋骨下緣與骨盆上緣（腸骨嵴）的中間點量一圈。</span><span lang="en">Measuring waist: stand with feet shoulder-width apart and, at the end of a normal breath out, measure midway between the lowest rib and the top of the hip bone.</span></p>
+              <div id="bmiResult" aria-live="polite"></div>
+            </div>
+
+            <!-- Step 2: log & chart -->
+            <div class="prep-block" id="log">
+              <div class="block-head"><h2><span class="step">2</span><span lang="zh-Hant">體重紀錄</span><span lang="en">Weight log</span></h2><span class="microcopy"><span lang="zh-Hant">建議每週固定一天、同一時間量</span><span lang="en">Weigh once a week, same day and time</span></span></div>
+              <form class="add-row" id="logForm">
+                <label class="field" for="logDate"><span><span lang="zh-Hant">日期</span><span lang="en">Date</span></span><span class="input-unit"><input id="logDate" type="date" required /></span></label>
+                <label class="field" for="logWeight"><span><span lang="zh-Hant">體重</span><span lang="en">Weight</span></span><span class="input-unit"><input id="logWeight" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="—" required /><small>kg</small></span></label>
+                <button class="btn btn-primary btn-sm" type="submit"><span lang="zh-Hant">加入紀錄</span><span lang="en">Add entry</span></button>
+              </form>
+              <p class="form-note" id="logNote" role="status" aria-live="polite"></p>
+
+              <div class="chart-head">
+                <p class="chart-stat" id="chartStat"></p>
+                <label class="toggle"><input type="checkbox" id="refToggle" /> <span><span lang="zh-Hant">顯示研究平均值</span><span lang="en">Show trial averages</span></span></label>
+              </div>
+              <div class="chart-box" id="chartBox"></div>
+              <div class="chart-legend" id="chartLegend" hidden>
+                <span><i class="lg-you"></i><span lang="zh-Hant">你的紀錄</span><span lang="en">You</span></span>
+                <span><i class="lg-drug"></i><span lang="zh-Hant">藥物組平均</span><span lang="en">Drug-arm average</span></span>
+                <span><i class="lg-placebo"></i><span lang="zh-Hant">生活型態（安慰劑）組平均</span><span lang="en">Lifestyle / placebo average</span></span>
+              </div>
+              <p class="calc-note" id="refNote" hidden><span lang="zh-Hant">研究參考點為試驗結束時的平均體重變化：STEP 1（semaglutide 2.4 mg，68 週）、SURMOUNT-1（tirzepatide 15 mg，72 週）、STEP 12（台灣與中國大陸，semaglutide 2.4 mg，44 週）。兩組都有飲食與運動諮詢。這是平均值，不是目標；每個人的反應差異很大，是否用藥、用多少，由醫師決定。</span><span lang="en">Reference points are average weight change at the end of each trial: STEP 1 (semaglutide 2.4 mg, 68 weeks), SURMOUNT-1 (tirzepatide 15 mg, 72 weeks), STEP 12 (Taiwan and mainland China, 44 weeks). Both arms had lifestyle counselling. These are averages, not targets; medicine and dose are decided by your doctor.</span></p>
+
+              <details class="log-table-wrap">
+                <summary><span lang="zh-Hant">所有紀錄</span><span lang="en">All entries</span> <span class="count" id="logCount"></span></summary>
+                <ul class="log-list" id="logList"></ul>
+              </details>
+            </div>
+
+            <!-- Step 3: weekly habits -->
+            <div class="prep-block" id="habits">
+              <div class="block-head"><h2><span class="step">3</span><span lang="zh-Hant">本週的五個習慣</span><span lang="en">This week’s five habits</span></h2><span class="microcopy" id="weekLabel"></span></div>
+              <p class="action-lead"><span lang="zh-Hant">不用全部做到。勾選這週已經做到的，下週再挑一個加強。</span><span lang="en">You do not need all five. Tick what you managed this week and pick one to build next week.</span></p>
+              <div class="task-list" id="habitList"></div>
+            </div>
+          </div>
+
+          <aside class="weight-side">
+            <div class="coach-card" id="coachCard">
+              <p class="coach-kicker"><span lang="zh-Hant">個案管理師的叮嚀</span><span lang="en">From your coach</span></p>
+              <div id="coachMessages"></div>
+            </div>
+            <div class="map-card warn-card">
+              <h2 class="side-title"><span lang="zh-Hant">這些情況請就醫</span><span lang="en">Seek care if</span></h2>
+              <ul>
+                <li><span lang="zh-Hant">持續劇烈腹痛，可能延伸到背部</span><span lang="en">Severe, persistent belly pain that may spread to the back</span></li>
+                <li><span lang="zh-Hant">持續嘔吐、無法進食喝水、尿量明顯減少</span><span lang="en">Persistent vomiting, cannot keep fluids down, much less urine</span></li>
+                <li><span lang="zh-Hant">右上腹痛、發燒、皮膚或眼白變黃</span><span lang="en">Upper-right belly pain, fever, yellow skin or eyes</span></li>
+                <li><span lang="zh-Hant">胸痛、嚴重喘、昏厥：請撥 119</span><span lang="en">Chest pain, severe breathlessness, fainting: call 119</span></li>
+              </ul>
+              <button class="text-button danger" type="button" id="clearWeight"><span lang="zh-Hant">清除所有體重資料</span><span lang="en">Clear all weight data</span></button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section tight">
+        <div class="wrap">
+          <div class="callout disclaimer">
+            <p class="callout-title"><span lang="zh-Hant">這不是醫療諮詢</span><span lang="en">This is not medical advice</span></p>
+            <p><span lang="zh-Hant">本工具只做 BMI、腰圍與體重變化的計算，並提供一般健康教育。它不會判斷你是否需要用藥，也不提供任何藥物或劑量建議。是否使用減重藥物、使用哪一種與劑量，必須由醫師依你的完整病史評估。已在使用藥物的人，請依醫師指示調整劑量，不要自行增減或停藥。</span><span lang="en">This tool only calculates BMI, waist category and weight change, and offers general education. It does not decide whether you need medicine and gives no drug or dose advice. Whether to use a weight-loss medicine, which one, and at what dose must be decided by a doctor who knows your history. If you already take one, follow your doctor’s dosing; do not change or stop it yourself.</span></p>
+            <p><span lang="zh-Hant">延伸閱讀：</span><span lang="en">Read more: </span><a href="./guide-glp1.html"><span lang="zh-Hant">GLP-1 減重藥物：開始之前要知道的 8 件事</span><span lang="en">GLP-1 guide, part 1</span></a>・<a href="./guide-glp1-lifestyle.html"><span lang="zh-Hant">GLP-1 治療期間怎麼吃、怎麼動</span><span lang="en">part 2</span></a></p>
+          </div>
+        </div>
+      </section>
+      <section class="section tight no-print" id="safety">
+        <div class="wrap">
+          <div class="safety">
+            <span class="safety-icon" aria-hidden="true">!</span>
+            <div>
+              <h2><span lang="zh-Hant">本站提供健康教育，不是診斷或治療。</span><span lang="en">This site offers health education, not diagnosis or treatment.</span></h2>
+              <p>
+                <span lang="zh-Hant">請不要因為本站內容自行開始、停止或調整任何藥物。<strong>如果出現胸痛、嚴重呼吸困難、昏厥或其他緊急症狀，請立即撥打 119 或前往急診。</strong>若你有慢性病、懷孕，或曾被醫療人員限制活動，請依照自己的醫療計畫。</span>
+                <span lang="en">Do not start, stop, or change any medicine because of this site. <strong>If you have chest pain, severe shortness of breath, fainting, or another emergency symptom, call your local emergency number (119 in Taiwan) or go to an emergency department now.</strong> If you have a chronic condition, are pregnant, or have been told to limit activity, follow your own clinical plan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer no-print">
+      <div class="wrap">
+        <div class="footer-legal" style="margin-top: 0; padding-top: 0; border-top: 0">
+          <span>© <span data-year>2026</span> SuppleScience / 實證補給</span>
+          <span><span lang="zh-Hant">獨立經營的健康教育網站，與任何醫療機構無關。</span><span lang="en">An independent health-education site, not affiliated with any healthcare institution.</span></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
