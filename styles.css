@@ -532,3 +532,16 @@ a.feature:hover .btn-primary { background: var(--brand); }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+/* ---------- Home: series link under featured guide ---------- */
+.series-next { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 18px 24px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--surface); text-decoration: none; transition: border-color .15s ease; }
+.series-next:hover { border-color: var(--ink); }
+.series-label { flex: 0 0 auto; color: var(--brand); font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; }
+.series-title { flex: 1; min-width: 0; font-weight: 600; font-size: 15.5px; line-height: 1.5; }
+.series-next .arrow { font-family: var(--mono); color: var(--brand); transition: transform .15s ease; }
+.series-next:hover .arrow { transform: translateX(3px); }
+@media (max-width: 760px) {
+  .series-next { flex-wrap: wrap; gap: 8px 12px; padding: 16px 18px; }
+  .series-title { flex-basis: 100%; order: 3; }
+  .series-next .arrow { display: none; }
+}
