@@ -1,8 +1,8 @@
 // 營養計算機 on the GLP-1 part 3 guide: protein (tab 1) and daily calories (tab 2).
 // Pure arithmetic in the browser; nothing is stored or sent.
 // Protein: 1 portion of 豆魚蛋肉類 ≈ 7 g protein (國民健康署 food exchange list).
-// Calories: 國民健康署 method — kcal per kg of CURRENT weight by BMI status × workload;
-// for weight loss, about 500 kcal/day less, never below 1,200 kcal/day.
+// Calories: ① 國民健康署 method — kcal per kg of CURRENT weight by BMI status × workload;
+// ② Mifflin–St Jeor × FAO/WHO/UNU PAL. For weight loss, about 500 kcal/day less, never below 1,200 kcal/day.
 
 const GRAMS_PER_PORTION = 7;
 const MEALS = 3;
@@ -86,9 +86,15 @@ function initProtein() {
   render();
 }
 
+// Mifflin–St Jeor resting energy (Mifflin 1990) × FAO/WHO/UNU (2004) physical activity level ranges.
+const PAL = { light: [1.4, 1.69], moderate: [1.7, 1.99], heavy: [2.0, 2.4] };
+const mifflin = (sex, kg, cm, age) => 10 * kg + 6.25 * cm - 5 * age + (sex === "m" ? 5 : -161);
+const round10 = (n) => Math.round(n / 10) * 10;
+
 function initCalorie() {
   const height = document.getElementById("calHeight");
   const weight = document.getElementById("calWeight");
+  const age = document.getElementById("calAge");
   const lose = document.getElementById("calLose");
   const result = document.getElementById("calorieResult");
   if (!height || !weight || !result) return;
@@ -98,8 +104,14 @@ function initCalorie() {
   function render() {
     const cm = Number(height.value);
     const kg = Number(weight.value);
+    const years = Number(age.value);
+    const sex = form.querySelector('input[name="calSex"]:checked')?.value || "";
     if (!(cm >= 120 && cm <= 220) || !(kg >= 30 && kg <= 250)) {
       result.innerHTML = '<p class="calc-empty">輸入身高（120–220 公分）與體重（30–250 公斤）後，這裡會顯示你一天大約需要多少熱量。</p>';
+      return;
+    }
+    if (age.value && years < 18) {
+      result.innerHTML = '<p class="calc-warn">這個計算機只適用於 18 歲以上的成人。兒童與青少年的熱量需求與成長有關，請和醫師或營養師討論。</p>';
       return;
     }
     const activity = form.querySelector('input[name="calActivity"]:checked').value;
@@ -107,36 +119,64 @@ function initCalorie() {
     const status = bmi < 18.5 ? "under" : bmi < 24 ? "normal" : "over";
     const statusLabel = bmi < 18.5 ? "體重過輕" : bmi < 24 ? "健康體位" : bmi < 27 ? "過重" : bmi < 30 ? "輕度肥胖" : bmi < 35 ? "中度肥胖" : "重度肥胖";
     const [lo, hi] = KCAL_PER_KG[status][activity];
-    const need = [roundKcal(kg * lo), roundKcal(kg * hi)];
+    const hpa = [roundKcal(kg * lo), roundKcal(kg * hi)];
 
-    let extra = "";
-    if (lose.checked) {
-      if (status === "under") {
-        extra = '<p class="calc-warn">你的 BMI 屬於體重過輕，不建議再減重。如果體重持續下降，請和醫師討論。</p>';
-      } else if (status === "normal") {
-        extra = '<p class="calc-warn">你的 BMI 在健康範圍，通常不需要刻意減重。若腰圍超標（男性 ≥90、女性 ≥80 公分），可以從飲食品質與活動量開始調整，而不是大幅減少熱量。</p>';
-      } else {
-        const target = need.map((n) => Math.max(MIN_KCAL, n - DEFICIT));
-        const floored = need.some((n) => n - DEFICIT < MIN_KCAL);
-        extra = `
-          <div class="calc-stats single">
-            <div><span class="calc-label">減重時每天約</span><strong>${kcalRange(target[0], target[1])}</strong><span class="calc-unit">大卡</span></div>
-          </div>
-          <p class="calc-example">每天比需要量少約 500 大卡（也可以少吃 300 大卡、多動 200 大卡），大約每週減 0.5 公斤。${floored ? "已依建議調整為不低於 1,200 大卡。" : ""}控制體重時，每天攝取的熱量不要低於 1,200 大卡。</p>
-          <p class="calc-example">正在使用 GLP-1 類減重藥物的人，常常吃得比這個還少。重點是先吃夠蛋白質（切換到「蛋白質」計算），不要刻意吃得更少。</p>`;
-      }
+    const hasMifflin = (sex === "m" || sex === "f") && years >= 18 && years <= 100;
+    let mif = null;
+    if (hasMifflin) {
+      const rmr = mifflin(sex, kg, cm, years);
+      mif = { rmr: round10(rmr), range: PAL[activity].map((p) => round10(rmr * p)) };
     }
+    const clampLow = (range) => range.map((n) => Math.max(MIN_KCAL, n));
+    let summaryLabel;
+    let summary;
+    let summaryNote = "";
+    let extra = "";
+
+    if (lose.checked && status === "under") {
+      extra = '<p class="calc-warn">你的 BMI 屬於體重過輕，不建議再減重。如果體重持續下降，請和醫師討論。</p>';
+    } else if (lose.checked && status === "normal") {
+      extra = '<p class="calc-warn">你的 BMI 在健康範圍，通常不需要刻意減重。若腰圍超標（男性 ≥90、女性 ≥80 公分），可以從飲食品質與活動量開始調整，而不是大幅減少熱量。</p>';
+    }
+
+    if (status === "over" && lose.checked) {
+      // ① is already a weight-control intake for overweight people; ② is maintenance, so subtract ~500.
+      const parts = mif ? [...hpa, ...mif.range.map((n) => n - DEFICIT)] : hpa;
+      const raw = [Math.min(...parts), Math.max(...parts)];
+      summary = clampLow(raw);
+      summaryLabel = "減重時每天約";
+      summaryNote = `對過重或肥胖的人，國健署的建議量本身就是控制體重的攝取量${mif ? "；公式估算的是維持體重的消耗，所以再減約 500 大卡" : ""}。${raw[0] < MIN_KCAL ? "已調整為不低於 1,200 大卡。" : ""}控制體重時，每天攝取不要低於 1,200 大卡。建議從範圍中較高的數字開始，依兩到三週的體重變化再調整，大約每週減 0.5 公斤是合理的速度。`;
+      extra += '<p class="calc-example">正在使用 GLP-1 類減重藥物的人，常常吃得比這個還少。重點是先吃夠蛋白質（切換到「蛋白質」計算），不要刻意吃得更少。</p>';
+    } else if (status === "over") {
+      summary = mif ? mif.range : hpa;
+      summaryLabel = mif ? "維持目前體重大約需要" : "國健署建議每天攝取";
+      summaryNote = mif
+        ? "這是維持目前體重的估算。國健署對過重或肥胖者的建議量（①）比較低，是以控制體重為目標。"
+        : "國健署對過重或肥胖者的建議量，是以控制體重為目標。填寫性別與年齡，可以看到維持目前體重的估算。";
+    } else {
+      const all = mif ? [...hpa, ...mif.range] : hpa;
+      summary = [Math.min(...all), Math.max(...all)];
+      summaryLabel = "每天大約需要（參考範圍）";
+      summaryNote = mif ? "兩種方法的差距，反映了公式本身的不確定性。" : "填寫性別與年齡，可以看到第二種估算。";
+    }
+
+    const mifCard = mif
+      ? `<div><span class="calc-label">② 公式估算・維持體重的消耗</span><strong>${kcalRange(mif.range[0], mif.range[1])}</strong><span class="calc-unit">大卡（Mifflin–St Jeor，靜止代謝約 ${mif.rmr.toLocaleString()}）</span></div>`
+      : `<div class="calc-missing"><span class="calc-label">② 公式估算・維持體重的消耗</span><span class="calc-unit">填寫性別與年齡後顯示</span></div>`;
 
     result.innerHTML = `
       <div class="calc-stats">
         <div><span class="calc-label">BMI</span><strong>${bmi.toFixed(1)}</strong><span class="calc-unit">${statusLabel}</span></div>
-        <div><span class="calc-label">${LABEL[activity]}・每公斤</span><strong>${lo === hi ? lo : `${lo}–${hi}`}</strong><span class="calc-unit">大卡</span></div>
-        <div><span class="calc-label">每天大約需要</span><strong>${kcalRange(need[0], need[1])}</strong><span class="calc-unit">大卡</span></div>
+        <div><span class="calc-label">① 國健署建議攝取（${LABEL[activity]}）</span><strong>${kcalRange(hpa[0], hpa[1])}</strong><span class="calc-unit">大卡（${lo === hi ? lo : `${lo}–${hi}`} × ${kg} 公斤）</span></div>
+        ${mifCard}
       </div>
-      <p class="calc-example">計算方式：${lo === hi ? lo : `${lo}–${hi}`} 大卡 × 目前體重 ${kg} 公斤。</p>${extra}`;
+      <div class="calc-stats single combined">
+        <div><span class="calc-label">${summaryLabel}</span><strong>${kcalRange(summary[0], summary[1])}</strong><span class="calc-unit">大卡</span></div>
+      </div>
+      <p class="calc-example">${summaryNote}${mif ? "歐美發展的公式用在亞洲人身上可能略為高估。" : ""}</p>${extra}`;
   }
 
-  [height, weight].forEach((el) => el.addEventListener("input", render));
+  [height, weight, age].forEach((el) => el.addEventListener("input", render));
   form.addEventListener("change", render);
   form.addEventListener("submit", (event) => event.preventDefault());
   render();

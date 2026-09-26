@@ -907,3 +907,20 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
 .calc-stats.single > div { background: var(--brand); }
 .calc-warn { margin-top: 12px !important; padding: 12px 14px; border-radius: var(--r-sm); background: #fff3d6; color: var(--ink-2) !important; font-size: 14px !important; line-height: 1.7 !important; }
 @media (max-width: 760px) { .calorie-form { grid-template-columns: minmax(0, 1fr); } }
+.calc-lead { color: var(--ink-2) !important; }
+.calc-pointer { padding: 12px 16px; border-radius: var(--r-sm); background: var(--brand-tint); font-size: 15px !important; }
+.toc li.toc-tool { counter-increment: none; margin-bottom: 6px; }
+.toc li.toc-tool a { color: var(--brand); font-weight: 600; }
+.toc li.toc-tool a::before { content: "工具"; padding: 1px 6px; border-radius: 5px; background: var(--lime); color: var(--ink); font-size: 10.5px; }
+.calorie-form .cal-sex { grid-column: 1 / 2; }
+.cal-sex label { min-height: 46px; }
+.calc-stats > div.calc-missing { background: var(--bg-2); color: var(--ink-3); }
+.calc-stats > div.calc-missing .calc-label, .calc-stats > div.calc-missing .calc-unit { color: var(--ink-3); }
+.calc-stats.combined { margin-top: 10px; }
+.calc-stats.combined > div { background: var(--lime); color: var(--ink); }
+.calc-stats.combined .calc-label, .calc-stats.combined .calc-unit { color: var(--ink-2); }
+.calc-stats.combined strong { color: var(--ink); }
+.calc-stats .calc-label { font-size: 12px; }
+.calorie-form .cal-sex { display: block; }
+.calorie-form .cal-sex legend { float: none; width: auto; display: block; margin-bottom: 6px; }
+.calorie-form .cal-sex label { display: inline-flex; margin-right: 6px; }

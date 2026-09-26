@@ -78,6 +78,7 @@
         <aside class="toc" aria-label="目錄">
           <p class="toc-title">目錄</p>
           <ol>
+            <li class="toc-tool"><a href="#protein-calc">營養計算機</a></li>
             <li><a href="#why">為什麼更要注意吃與動</a></li>
             <li><a href="#protein">蛋白質：每餐先放</a></li>
             <li><a href="#eat-less">吃得少，也要吃得對</a></li>
@@ -100,6 +101,55 @@
               <li>腸胃不適多半可以靠「少量、慢吃、少油、多喝水」改善；嚴重症狀請參考第 1 篇的就醫警訊。</li>
             </ul>
           </section>
+
+          <p class="calc-lead">先算算看：輸入體重，看每餐需要幾份蛋白質；或輸入性別、年齡、身高與工作量，估算一天需要多少熱量。</p>
+          <div class="calc" id="protein-calc">
+            <div class="calc-head">
+              <p class="calc-title">營養計算機</p>
+              <div class="filter-row calc-tabs" role="tablist" aria-label="選擇計算機">
+                <button class="filter-chip" type="button" role="tab" data-calc-tab="protein" aria-selected="true" aria-pressed="true">蛋白質</button>
+                <button class="filter-chip" type="button" role="tab" data-calc-tab="calorie" aria-selected="false" aria-pressed="false">熱量</button>
+              </div>
+            </div>
+
+            <div class="calc-panel" data-calc-panel="protein" role="tabpanel">
+              <form class="calc-form" id="proteinForm">
+                <label class="field" for="proteinWeight"><span>體重</span><span class="input-unit"><input id="proteinWeight" type="number" inputmode="decimal" min="30" max="250" step="0.5" placeholder="例如 70" /><small>kg</small></span></label>
+                <label class="field" for="proteinGoal"><span>情況</span><span class="input-unit"><select id="proteinGoal">
+                  <option value="1.0-1.2" selected>減重期間或 65 歲以上（每公斤 1.0–1.2 公克）</option>
+                  <option value="0.8-0.8">一般健康成人（每公斤 0.8 公克，最低需求）</option>
+                </select></span></label>
+              </form>
+              <div class="calc-result" id="proteinResult" aria-live="polite">
+                <p class="calc-empty">輸入體重後，這裡會顯示每天與每餐的建議量。</p>
+              </div>
+              <p class="calc-note">這是一般參考值。BMI 很高的人，用實際體重計算可能偏高；有慢性腎臟病、洗腎或醫師限制蛋白質的人，請先和醫師或營養師討論。</p>
+            </div>
+
+            <div class="calc-panel" data-calc-panel="calorie" id="calorie-calc" role="tabpanel" hidden>
+              <form class="calc-form calorie-form" id="calorieForm">
+                <fieldset class="sex-field cal-sex">
+                  <legend>生理性別</legend>
+                  <label><input type="radio" name="calSex" value="m" /> 男</label>
+                  <label><input type="radio" name="calSex" value="f" /> 女</label>
+                </fieldset>
+                <label class="field" for="calAge"><span>年齡</span><span class="input-unit"><input id="calAge" type="number" inputmode="numeric" min="18" max="100" step="1" placeholder="例如 45" /><small>歲</small></span></label>
+                <label class="field" for="calHeight"><span>身高</span><span class="input-unit"><input id="calHeight" type="number" inputmode="decimal" min="120" max="220" step="0.1" placeholder="例如 165" /><small>cm</small></span></label>
+                <label class="field" for="calWeight"><span>目前體重</span><span class="input-unit"><input id="calWeight" type="number" inputmode="decimal" min="30" max="250" step="0.1" placeholder="例如 70" /><small>kg</small></span></label>
+                <fieldset class="activity-field">
+                  <legend>平常的工作量</legend>
+                  <label><input type="radio" name="calActivity" value="light" checked /><span><strong>輕度</strong>大部分坐著：坐辦公室、家務、售貨員</span></label>
+                  <label><input type="radio" name="calActivity" value="moderate" /><span><strong>中度</strong>站立走動多：護理師、服務生、保母、機械操作</span></label>
+                  <label><input type="radio" name="calActivity" value="heavy" /><span><strong>重度</strong>大量體力勞動：農漁、建築、搬運、運動員</span></label>
+                </fieldset>
+                <label class="toggle"><input type="checkbox" id="calLose" /> <span>我想減重</span></label>
+              </form>
+              <div class="calc-result" id="calorieResult" aria-live="polite">
+                <p class="calc-empty">輸入身高與體重後，這裡會顯示你一天大約需要多少熱量。</p>
+              </div>
+              <p class="calc-note">兩種估算方式：①國民健康署：依 BMI 體位與工作量，乘上每公斤所需熱量。②Mifflin–St Jeor 公式：以性別、年齡、身高、體重估算靜止代謝率，再乘上聯合國糧農組織／世界衛生組織的活動量係數（輕度 1.40–1.69、中度 1.70–1.99、重度 2.00–2.40）；它是驗證研究中最常準確到 ±10% 以內的公式，但以歐美族群為主，用在亞洲人可能略為高估。任何公式都只是粗估，請依兩到三週的實際體重變化再調整。不適用於孕婦、哺乳、18 歲以下，以及慢性腎臟病或醫師另有飲食限制的人。</p>
+            </div>
+          </div>
 
           <p>這是 GLP-1 系列的第 3 篇。如果你還不熟悉這類藥物，建議先閱讀<a href="./guide-glp1.html">第 1 篇：它是什麼、誰適合、效果有多大</a>，以及<a href="./guide-glp1-safety.html">第 2 篇：劑量、副作用、停藥與安全使用</a>。</p>
 
@@ -139,47 +189,7 @@
             </table>
           </div>
           <p class="table-note">舉例：體重 70 公斤、目標每公斤 1.0–1.2 公克，一天約需 70–84 公克蛋白質，大約是每餐 3–4 份。</p>
-          <div class="calc" id="protein-calc">
-            <div class="calc-head">
-              <p class="calc-title">營養計算機</p>
-              <div class="filter-row calc-tabs" role="tablist" aria-label="選擇計算機">
-                <button class="filter-chip" type="button" role="tab" data-calc-tab="protein" aria-selected="true" aria-pressed="true">蛋白質</button>
-                <button class="filter-chip" type="button" role="tab" data-calc-tab="calorie" aria-selected="false" aria-pressed="false">熱量</button>
-              </div>
-            </div>
-
-            <div class="calc-panel" data-calc-panel="protein" role="tabpanel">
-              <form class="calc-form" id="proteinForm">
-                <label class="field" for="proteinWeight"><span>體重</span><span class="input-unit"><input id="proteinWeight" type="number" inputmode="decimal" min="30" max="250" step="0.5" placeholder="例如 70" /><small>kg</small></span></label>
-                <label class="field" for="proteinGoal"><span>情況</span><span class="input-unit"><select id="proteinGoal">
-                  <option value="1.0-1.2" selected>減重期間或 65 歲以上（每公斤 1.0–1.2 公克）</option>
-                  <option value="0.8-0.8">一般健康成人（每公斤 0.8 公克，最低需求）</option>
-                </select></span></label>
-              </form>
-              <div class="calc-result" id="proteinResult" aria-live="polite">
-                <p class="calc-empty">輸入體重後，這裡會顯示每天與每餐的建議量。</p>
-              </div>
-              <p class="calc-note">這是一般參考值。BMI 很高的人，用實際體重計算可能偏高；有慢性腎臟病、洗腎或醫師限制蛋白質的人，請先和醫師或營養師討論。</p>
-            </div>
-
-            <div class="calc-panel" data-calc-panel="calorie" id="calorie-calc" role="tabpanel" hidden>
-              <form class="calc-form calorie-form" id="calorieForm">
-                <label class="field" for="calHeight"><span>身高</span><span class="input-unit"><input id="calHeight" type="number" inputmode="decimal" min="120" max="220" step="0.1" placeholder="例如 165" /><small>cm</small></span></label>
-                <label class="field" for="calWeight"><span>目前體重</span><span class="input-unit"><input id="calWeight" type="number" inputmode="decimal" min="30" max="250" step="0.1" placeholder="例如 70" /><small>kg</small></span></label>
-                <fieldset class="activity-field">
-                  <legend>平常的工作量</legend>
-                  <label><input type="radio" name="calActivity" value="light" checked /><span><strong>輕度</strong>大部分坐著：坐辦公室、家務、售貨員</span></label>
-                  <label><input type="radio" name="calActivity" value="moderate" /><span><strong>中度</strong>站立走動多：護理師、服務生、保母、機械操作</span></label>
-                  <label><input type="radio" name="calActivity" value="heavy" /><span><strong>重度</strong>大量體力勞動：農漁、建築、搬運、運動員</span></label>
-                </fieldset>
-                <label class="toggle"><input type="checkbox" id="calLose" /> <span>我想減重</span></label>
-              </form>
-              <div class="calc-result" id="calorieResult" aria-live="polite">
-                <p class="calc-empty">輸入身高與體重後，這裡會顯示你一天大約需要多少熱量。</p>
-              </div>
-              <p class="calc-note">依衛生福利部國民健康署的估算方式：先用 BMI 判斷體位，再依工作量乘上每公斤所需熱量。這是粗估，實際需求因年齡、性別與肌肉量而不同；可以依照兩到三週的體重變化再調整。不適用於孕婦、哺乳、18 歲以下，以及慢性腎臟病或醫師另有飲食限制的人。</p>
-            </div>
-          </div>
+          <p class="calc-pointer">想知道自己每餐需要幾份蛋白質？請用本文開頭的<a href="#protein-calc">營養計算機</a>。</p>
           <ul>
             <li><strong>先吃蛋白質</strong>：食量有限時，先吃盤中的蛋白質與蔬菜，再吃飯麵。</li>
             <li><strong>平均分配到三餐</strong>，不要集中在晚餐一次吃完。</li>
