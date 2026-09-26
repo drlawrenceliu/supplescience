@@ -924,3 +924,13 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
 .calorie-form .cal-sex { display: block; }
 .calorie-form .cal-sex legend { float: none; width: auto; display: block; margin-bottom: 6px; }
 .calorie-form .cal-sex label { display: inline-flex; margin-right: 6px; }
+
+/* ---------- Footer: two link lanes ---------- */
+.footer-grid { grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 0.7fr)); gap: 48px; }
+.footer-col li.footer-all a { color: var(--brand); font-weight: 600; }
+.footer-legal-links a { color: var(--ink-3); text-decoration: none; }
+.footer-legal-links a:hover { color: var(--brand); text-decoration: underline; }
+@media (max-width: 760px) {
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  .footer-grid > div:first-child { grid-column: 1 / -1; }
+}
