@@ -19,7 +19,7 @@ const QUESTION_GROUPS = [
   {
     id: "glp1",
     title: "GLP-1 與體重管理",
-    guide: "./guide-glp1.html",
+    guide: "./guide-glp1-safety.html#questions",
     questions: [
       ["w1", "以我的 BMI 與健康狀況，是否適合使用 GLP-1 類藥物？"],
       ["w2", "我可以預期多少效果？多久評估一次，達到什麼程度算有效？"],

@@ -279,6 +279,7 @@ function referenceSeries() {
   keys.forEach((key) => {
     const trial = TRIALS[key];
     Object.entries(trial.arms).forEach(([arm, a]) => {
+      if (arm === "placebo") return; // drug arms only
       const alt = key === "step12" ? " alt" : "";
       const cls = arm === "placebo" ? `ref-line-placebo${alt}` : `ref-line-drug${alt}${key === "surmount1" ? ` ${arm}` : ""}`;
       series.push({ points: trial.weeks.map((w, i) => [w, a.values[i]]), cls });
