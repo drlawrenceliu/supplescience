@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh" data-title-zh="看診準備單｜實證補給" data-title-en="Visit prep sheet｜SuppleScience">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var l = "zh";
+        try { if (localStorage.getItem("supplescience-lang") === "en") l = "en"; } catch (e) {}
+        document.documentElement.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant";
+      })();
+    </script>
+    <title>看診準備單｜實證補給</title>
+    <meta name="description" content="整理想問醫師的問題、目前使用的藥物與保健食品，列印或存成 PDF 帶去看診。資料只存在你的裝置。" />
+    <meta name="theme-color" content="#0d2626" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="看診準備單｜實證補給" />
+    <meta property="og:description" content="整理想問醫師的問題、目前使用的藥物與保健食品，列印或存成 PDF 帶去看診。資料只存在你的裝置。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="實證補給 SuppleScience" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d2626'/%3E%3Cpath d='M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5' fill='none' stroke='%23c9f06b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='43' cy='19' r='4' fill='%23ee6c4f'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./site.js"></script>
+    <script defer src="./visit-prep.js"></script>
+  </head>
+  <body class="has-print-area">
+    <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
+    <section class="print-area" id="prepPrint" aria-hidden="true"></section>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="./">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#0d2626" /><path d="M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5" fill="none" stroke="#c9f06b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="43" cy="19" r="4" fill="#ee6c4f" /></svg>
+          <span class="brand-text"><span class="brand-name">實證補給</span><span class="brand-sub">SUPPLESCIENCE</span></span>
+        </a>
+        <nav class="nav" id="siteNav" aria-label="Main">
+          <a href="./guides.html"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./tools.html" aria-current="page"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
+          <a href="./reset.html"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
+        </nav>
+        <div class="header-actions">
+          <button class="lang-toggle" type="button">EN</button>
+          <a class="btn btn-primary btn-sm" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the reset</span></a>
+          <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="article-hero no-print">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="./"><span lang="zh-Hant">首頁</span><span lang="en">Home</span></a><span aria-hidden="true">/</span>
+            <a href="./tools.html"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a><span aria-hidden="true">/</span>
+            <span><span lang="zh-Hant">看診準備單</span><span lang="en">Visit prep</span></span>
+          </nav>
+          <p class="eyebrow">Tool · Visit prep</p>
+          <h1><span lang="zh-Hant">看診準備單</span><span lang="en">Visit prep sheet</span></h1>
+          <p class="article-dek"><span lang="zh-Hant">看診時間很短。先把想問的問題和目前用的藥物、保健食品整理好，列印或存成 PDF 帶去，溝通會更有效率。</span><span lang="en">Appointments are short. Prepare your questions and a list of medicines and supplements, then print it or save it as a PDF.</span></p>
+          <p class="privacy-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2.5" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg><span lang="zh-Hant">內容只存在這台裝置的瀏覽器，不會上傳。使用公用電腦時，完成後請按「清除全部」。</span><span lang="en">Saved only in this browser on this device. On a shared computer, press “Clear all” when you finish.</span></p>
+        </div>
+      </header>
+      <section class="section tight no-print">
+        <div class="wrap prep-layout">
+          <div class="prep-main">
+            <div class="prep-block">
+              <div class="block-head"><h2><span class="step">1</span><span lang="zh-Hant">看診資訊</span><span lang="en">Visit details</span></h2><span class="microcopy"><span lang="zh-Hant">選填</span><span lang="en">Optional</span></span></div>
+              <div class="field-grid two">
+                <label class="field" for="prepDate"><span><span lang="zh-Hant">看診日期</span><span lang="en">Date</span></span><span class="input-unit"><input id="prepDate" type="date" /></span></label>
+                <label class="field" for="prepDept"><span><span lang="zh-Hant">科別</span><span lang="en">Clinic</span></span><span class="input-unit"><input id="prepDept" type="text" maxlength="40" placeholder="例如：心臟內科" autocomplete="off" /></span></label>
+              </div>
+            </div>
+
+            <div class="prep-block">
+              <div class="block-head"><h2><span class="step">2</span><span lang="zh-Hant">我想問的問題</span><span lang="en">My questions</span></h2><span class="microcopy" id="questionCount"></span></div>
+              <p class="action-lead"><span lang="zh-Hant">勾選想問的問題。建議挑最重要的 3–5 題，看診時先問。</span><span lang="en">Tick the questions you want to ask. Pick the 3–5 most important and ask those first.</span></p>
+              <div id="questionBank"></div>
+              <form class="add-row" id="customForm">
+                <label class="visually-hidden" for="customInput">自訂問題</label>
+                <span class="input-unit grow"><input id="customInput" type="text" maxlength="160" placeholder="自己的問題，例如：我注意到……，我想知道……" autocomplete="off" /></span>
+                <button class="btn btn-ghost btn-sm" type="submit"><span lang="zh-Hant">加入</span><span lang="en">Add</span></button>
+              </form>
+              <ul class="custom-list" id="customList"></ul>
+            </div>
+
+            <div class="prep-block">
+              <div class="block-head"><h2><span class="step">3</span><span lang="zh-Hant">目前使用的藥物與保健食品</span><span lang="en">Medicines &amp; supplements</span></h2></div>
+              <p class="action-lead"><span lang="zh-Hant">包括處方藥、自己買的成藥，以及所有保健食品。可以對照藥袋填寫，或看診時直接帶藥袋。</span><span lang="en">Include prescriptions, over-the-counter medicines and every supplement. Copy from your medicine bags, or bring them.</span></p>
+              <div class="med-list" id="medList"></div>
+              <button class="btn btn-ghost btn-sm" type="button" id="addMed"><span lang="zh-Hant">＋ 新增一項</span><span lang="en">+ Add item</span></button>
+            </div>
+
+            <div class="prep-block">
+              <div class="block-head"><h2><span class="step">4</span><span lang="zh-Hant">想讓醫師知道的事</span><span lang="en">Things to tell the doctor</span></h2><span class="microcopy"><span lang="zh-Hant">選填</span><span lang="en">Optional</span></span></div>
+              <label class="visually-hidden" for="prepNotes">想讓醫師知道的事</label>
+              <textarea id="prepNotes" rows="4" maxlength="1200" placeholder="例如：最近兩週爬樓梯比較喘；上次開的藥吃了會頭暈。"></textarea>
+            </div>
+          </div>
+
+          <aside class="prep-side">
+            <div class="map-card">
+              <h2 class="side-title"><span lang="zh-Hant">完成後</span><span lang="en">When you are done</span></h2>
+              <p class="map-caption" id="prepSummary"></p>
+              <button class="btn btn-primary prep-print" type="button" id="printPrep"><span lang="zh-Hant">列印／存成 PDF</span><span lang="en">Print / save as PDF</span></button>
+              <p class="form-note" id="prepNote" role="status" aria-live="polite"></p>
+              <button class="text-button danger" type="button" id="clearPrep"><span lang="zh-Hant">清除全部</span><span lang="en">Clear all</span></button>
+              <p class="side-tip"><span lang="zh-Hant">存成 PDF：在列印畫面把印表機選為「另存為 PDF」。手機可用分享選單中的「列印」。</span><span lang="en">To save a PDF, choose “Save as PDF” as the printer. On phones, use Print from the share menu.</span></p>
+            </div>
+          </aside>
+        </div>
+      </section>
+      <section class="section tight no-print" id="safety">
+        <div class="wrap">
+          <div class="safety">
+            <span class="safety-icon" aria-hidden="true">!</span>
+            <div>
+              <h2><span lang="zh-Hant">本站提供健康教育，不是診斷或治療。</span><span lang="en">This site offers health education, not diagnosis or treatment.</span></h2>
+              <p>
+                <span lang="zh-Hant">請不要因為本站內容自行開始、停止或調整任何藥物。<strong>如果出現胸痛、嚴重呼吸困難、昏厥或其他緊急症狀，請立即撥打 119 或前往急診。</strong>若你有慢性病、懷孕，或曾被醫療人員限制活動，請依照自己的醫療計畫。</span>
+                <span lang="en">Do not start, stop, or change any medicine because of this site. <strong>If you have chest pain, severe shortness of breath, fainting, or another emergency symptom, call your local emergency number (119 in Taiwan) or go to an emergency department now.</strong> If you have a chronic condition, are pregnant, or have been told to limit activity, follow your own clinical plan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer no-print">
+      <div class="wrap">
+        <div class="footer-legal" style="margin-top: 0; padding-top: 0; border-top: 0">
+          <span>© <span data-year>2026</span> SuppleScience / 實證補給</span>
+          <span><span lang="zh-Hant">獨立經營的健康教育網站，與任何醫療機構無關。</span><span lang="en">An independent health-education site, not affiliated with any healthcare institution.</span></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

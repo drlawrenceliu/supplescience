@@ -27,7 +27,8 @@
     <script defer src="./site.js"></script>
     <script defer src="./app.js"></script>
   </head>
-  <body>
+  <body class="has-print-area">
+    <section class="print-area" id="resetPrint" aria-hidden="true"></section>
     <a class="skip-link" href="#todayCard"><span lang="zh-Hant">跳到今天的內容</span><span lang="en">Skip to today</span></a>
     <div class="draft-banner">
       <span lang="zh-Hant">試用版：每日內容仍在醫師審閱中。</span>
@@ -42,6 +43,7 @@
         </a>
         <nav class="nav" id="siteNav" aria-label="Main">
           <a href="./guides.html"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./tools.html"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
           <a href="./reset.html" aria-current="page"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
         </nav>
         <div class="header-actions">
@@ -158,6 +160,7 @@
             </div>
           </article>
 
+          <div class="side-col">
           <aside class="map-card" aria-labelledby="mapHeading">
             <div class="map-head">
               <div>
@@ -177,6 +180,33 @@
               <p id="dayReflection"></p>
             </div>
           </aside>
+          <aside class="map-card reset-tools" aria-labelledby="toolsHeading">
+            <h2 id="toolsHeading" class="side-title"><span lang="zh-Hant">計畫工具</span><span lang="en">Plan tools</span></h2>
+
+            <div class="round-box" id="roundBox" hidden>
+              <p class="mini-label"><span lang="zh-Hant">完成一輪了</span><span lang="en">Round complete</span></p>
+              <p><span lang="zh-Hant">這一輪的紀錄會保留在這台裝置上。開始新一輪後，進度與勾選會重新計算。</span><span lang="en">This round is kept on this device. A new round starts your progress and checklists fresh.</span></p>
+              <button class="btn btn-lime btn-sm" type="button" id="newRoundButton"></button>
+            </div>
+
+            <div class="tool-block">
+              <h3><span lang="zh-Hant">每日提醒</span><span lang="en">Daily reminder</span></h3>
+              <p class="map-caption"><span lang="zh-Hant">下載行事曆檔案，手機或電腦行事曆會在每天同一時間提醒你。</span><span lang="en">Download a calendar file and your phone or computer calendar will remind you at the same time each day.</span></p>
+              <div class="field-grid two">
+                <label class="field" for="reminderDate"><span><span lang="zh-Hant">開始日期</span><span lang="en">Start</span></span><span class="input-unit"><input id="reminderDate" type="date" /></span></label>
+                <label class="field" for="reminderTime"><span><span lang="zh-Hant">時間</span><span lang="en">Time</span></span><span class="input-unit"><input id="reminderTime" type="time" value="20:00" /></span></label>
+              </div>
+              <button class="btn btn-ghost btn-sm" type="button" id="reminderButton"><span lang="zh-Hant">下載行事曆提醒</span><span lang="en">Download reminder</span></button>
+              <p class="form-note" id="reminderNote" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="tool-block">
+              <h3><span lang="zh-Hant">21 天摘要</span><span lang="en">21-day summary</span></h3>
+              <p class="map-caption"><span lang="zh-Hant">列印或存成 PDF：每天的主題、完成狀況與你的紀錄，方便回顧或帶去看診。</span><span lang="en">Print or save as PDF: each day’s theme, what you completed, and your notes, to review or bring to a visit.</span></p>
+              <button class="btn btn-ghost btn-sm" type="button" id="printSummaryButton"><span lang="zh-Hant">列印／存成 PDF</span><span lang="en">Print / save as PDF</span></button>
+            </div>
+          </aside>
+          </div>
         </div>
       </section>
 

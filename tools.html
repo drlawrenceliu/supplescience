@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh" data-title-zh="實用工具｜實證補給" data-title-en="Tools｜SuppleScience">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var l = "zh";
+        try { if (localStorage.getItem("supplescience-lang") === "en") l = "en"; } catch (e) {}
+        document.documentElement.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant";
+      })();
+    </script>
+    <title>實用工具｜實證補給</title>
+    <meta name="description" content="實證補給的實用工具：保健食品實證速查、看診準備單、蛋白質計算機與 21 天計畫。資料只存在你的裝置。" />
+    <meta name="theme-color" content="#0d2626" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="實用工具｜實證補給" />
+    <meta property="og:description" content="實證補給的實用工具：保健食品實證速查、看診準備單、蛋白質計算機與 21 天計畫。資料只存在你的裝置。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="實證補給 SuppleScience" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d2626'/%3E%3Cpath d='M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5' fill='none' stroke='%23c9f06b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='43' cy='19' r='4' fill='%23ee6c4f'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="./">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#0d2626" /><path d="M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5" fill="none" stroke="#c9f06b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="43" cy="19" r="4" fill="#ee6c4f" /></svg>
+          <span class="brand-text"><span class="brand-name">實證補給</span><span class="brand-sub">SUPPLESCIENCE</span></span>
+        </a>
+        <nav class="nav" id="siteNav" aria-label="Main">
+          <a href="./guides.html"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./tools.html" aria-current="page"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
+          <a href="./reset.html"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
+        </nav>
+        <div class="header-actions">
+          <button class="lang-toggle" type="button">EN</button>
+          <a class="btn btn-primary btn-sm" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the reset</span></a>
+          <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="article-hero no-print">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="./"><span lang="zh-Hant">首頁</span><span lang="en">Home</span></a><span aria-hidden="true">/</span>
+            <span><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></span>
+          </nav>
+          <p class="eyebrow">Tools</p>
+          <h1><span lang="zh-Hant">實用工具</span><span lang="en">Practical tools</span></h1>
+          <p class="article-dek"><span lang="zh-Hant">把指南變成可以直接用的工具。所有資料只存在你的裝置，不需要登入，也不會上傳。</span><span lang="en">Turn the guides into something you can use. Everything stays on your device: no login, nothing uploaded.</span></p>
+
+        </div>
+      </header>
+      <section class="section tight">
+        <div class="wrap">
+          <div class="guide-grid">
+            <a class="guide-card tool-card" href="./lookup.html">
+              <span class="topic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></span>
+              <div class="guide-card-top"><span class="chip chip-live"><span lang="zh-Hant">查詢</span><span lang="en">Lookup</span></span></div>
+              <h2><span lang="zh-Hant">保健食品實證速查</span><span lang="en">Supplement evidence lookup</span></h2>
+              <p><span lang="zh-Hant">輸入魚油、紅麴、維生素 D、葉黃素……馬上看到每項宣稱功效的證據等級與適用對象。</span><span lang="en">Type fish oil, red yeast rice, vitamin D, lutein… and see the evidence grade and who it applies to for each claim.</span></p>
+              <div class="guide-card-foot"><span><span lang="zh-Hant">開始使用</span><span lang="en">Open</span></span><span class="arrow" aria-hidden="true">→</span></div>
+            </a>
+            <a class="guide-card tool-card" href="./visit-prep.html">
+              <span class="topic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M9 3.5h6v3H9zM8.5 11h7M8.5 14.5h7M8.5 18h4"/></svg></span>
+              <div class="guide-card-top"><span class="chip chip-live"><span lang="zh-Hant">看診</span><span lang="en">Clinic visit</span></span></div>
+              <h2><span lang="zh-Hant">看診準備單</span><span lang="en">Visit prep sheet</span></h2>
+              <p><span lang="zh-Hant">勾選想問的問題、列出目前的藥物與保健食品，列印或存成 PDF 帶去看診。</span><span lang="en">Pick questions to ask, list your medicines and supplements, then print or save as PDF for your appointment.</span></p>
+              <div class="guide-card-foot"><span><span lang="zh-Hant">開始使用</span><span lang="en">Open</span></span><span class="arrow" aria-hidden="true">→</span></div>
+            </a>
+            <a class="guide-card tool-card" href="./guide-glp1-lifestyle.html#protein-calc">
+              <span class="topic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12c0-4 3-7 7-7s7 3 7 7-3 7-7 7-7-3-7-7z"/><path d="M12 9v6M9 12h6"/></svg></span>
+              <div class="guide-card-top"><span class="chip chip-live"><span lang="zh-Hant">飲食</span><span lang="en">Nutrition</span></span></div>
+              <h2><span lang="zh-Hant">蛋白質計算機</span><span lang="en">Protein calculator</span></h2>
+              <p><span lang="zh-Hant">輸入體重，算出每天與每餐的蛋白質建議量，並換算成蛋、豆漿、豆腐等台灣常見食物。</span><span lang="en">Enter your weight to see daily and per-meal protein, converted into eggs, soy milk, tofu and other everyday foods.</span></p>
+              <div class="guide-card-foot"><span><span lang="zh-Hant">開始使用</span><span lang="en">Open</span></span><span class="arrow" aria-hidden="true">→</span></div>
+            </a>
+            <a class="guide-card tool-card" href="./reset.html">
+              <span class="topic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M8 3v4M16 3v4M4 10h16M9 14.5l2 2 4-4"/></svg></span>
+              <div class="guide-card-top"><span class="chip chip-live"><span lang="zh-Hant">習慣</span><span lang="en">Habits</span></span></div>
+              <h2><span lang="zh-Hant">21 天心臟代謝重整</span><span lang="en">21-Day Heart &amp; Metabolism Reset</span></h2>
+              <p><span lang="zh-Hant">每天一個 2–10 分鐘的小行動，可以設定每日提醒、列印 21 天摘要。</span><span lang="en">One 2–10 minute action a day, with daily calendar reminders and a printable 21-day summary.</span></p>
+              <div class="guide-card-foot"><span><span lang="zh-Hant">開始使用</span><span lang="en">Open</span></span><span class="arrow" aria-hidden="true">→</span></div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="section tight no-print" id="safety">
+        <div class="wrap">
+          <div class="safety">
+            <span class="safety-icon" aria-hidden="true">!</span>
+            <div>
+              <h2><span lang="zh-Hant">本站提供健康教育，不是診斷或治療。</span><span lang="en">This site offers health education, not diagnosis or treatment.</span></h2>
+              <p>
+                <span lang="zh-Hant">請不要因為本站內容自行開始、停止或調整任何藥物。<strong>如果出現胸痛、嚴重呼吸困難、昏厥或其他緊急症狀，請立即撥打 119 或前往急診。</strong>若你有慢性病、懷孕，或曾被醫療人員限制活動，請依照自己的醫療計畫。</span>
+                <span lang="en">Do not start, stop, or change any medicine because of this site. <strong>If you have chest pain, severe shortness of breath, fainting, or another emergency symptom, call your local emergency number (119 in Taiwan) or go to an emergency department now.</strong> If you have a chronic condition, are pregnant, or have been told to limit activity, follow your own clinical plan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer no-print">
+      <div class="wrap">
+        <div class="footer-legal" style="margin-top: 0; padding-top: 0; border-top: 0">
+          <span>© <span data-year>2026</span> SuppleScience / 實證補給</span>
+          <span><span lang="zh-Hant">獨立經營的健康教育網站，與任何醫療機構無關。</span><span lang="en">An independent health-education site, not affiliated with any healthcare institution.</span></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

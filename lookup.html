@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh" data-title-zh="保健食品實證速查｜實證補給" data-title-en="Supplement evidence lookup｜SuppleScience">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var l = "zh";
+        try { if (localStorage.getItem("supplescience-lang") === "en") l = "en"; } catch (e) {}
+        document.documentElement.dataset.lang = l;
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant";
+      })();
+    </script>
+    <title>保健食品實證速查｜實證補給</title>
+    <meta name="description" content="輸入魚油、紅麴、維生素 D、葉黃素等保健食品，查看每項宣稱功效的證據等級、適用對象與注意事項。" />
+    <meta name="theme-color" content="#0d2626" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="保健食品實證速查｜實證補給" />
+    <meta property="og:description" content="輸入魚油、紅麴、維生素 D、葉黃素等保健食品，查看每項宣稱功效的證據等級、適用對象與注意事項。" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content="實證補給 SuppleScience" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230d2626'/%3E%3Cpath d='M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5' fill='none' stroke='%23c9f06b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='43' cy='19' r='4' fill='%23ee6c4f'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./site.js"></script>
+    <script defer src="./lookup.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
+
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="./">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#0d2626" /><path d="M17 34c7-16 22-20 30-14-3 15-13 24-29 22l-5 5" fill="none" stroke="#c9f06b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="43" cy="19" r="4" fill="#ee6c4f" /></svg>
+          <span class="brand-text"><span class="brand-name">實證補給</span><span class="brand-sub">SUPPLESCIENCE</span></span>
+        </a>
+        <nav class="nav" id="siteNav" aria-label="Main">
+          <a href="./guides.html"><span lang="zh-Hant">實證指南</span><span lang="en">Guides</span></a>
+          <a href="./tools.html" aria-current="page"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
+          <a href="./reset.html"><span lang="zh-Hant">21 天計畫</span><span lang="en">21-Day Reset</span></a>
+        </nav>
+        <div class="header-actions">
+          <button class="lang-toggle" type="button">EN</button>
+          <a class="btn btn-primary btn-sm" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the reset</span></a>
+          <button class="menu-toggle" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Menu"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="article-hero no-print">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="./"><span lang="zh-Hant">首頁</span><span lang="en">Home</span></a><span aria-hidden="true">/</span>
+            <a href="./tools.html"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a><span aria-hidden="true">/</span>
+            <span><span lang="zh-Hant">保健食品實證速查</span><span lang="en">Evidence lookup</span></span>
+          </nav>
+          <p class="eyebrow">Tool · Evidence lookup</p>
+          <h1><span lang="zh-Hant">保健食品實證速查</span><span lang="en">Supplement evidence lookup</span></h1>
+          <p class="article-dek"><span lang="zh-Hant">同一種保健食品，用在不同目的、不同族群，證據可能完全不同。這裡替每一項「宣稱功效」分別標示證據等級。</span><span lang="en">The same supplement can have very different evidence for different purposes and people. Each claim is graded separately.</span></p>
+          <div class="article-meta"><span class="chip chip-draft"><span lang="zh-Hant">草稿・待臨床審閱</span><span lang="en">Draft · clinical review</span></span></div>
+        </div>
+      </header>
+      <section class="section tight">
+        <div class="wrap">
+          <form class="lookup-search" id="lookupForm" role="search">
+            <label class="visually-hidden" for="lookupInput"><span lang="zh-Hant">搜尋保健食品</span><span lang="en">Search supplements</span></label>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+            <input id="lookupInput" type="search" autocomplete="off" placeholder="輸入保健食品名稱，例如：魚油、紅麴、膽固醇" />
+          </form>
+          <div class="lookup-filters">
+            <div class="filter-row" id="lookupQuick" aria-label="Quick picks"></div>
+            <div class="filter-row grade-filter" role="group" aria-label="Evidence grade">
+              <button class="filter-chip" type="button" data-grade-filter="A" aria-pressed="false"><span class="grade grade-a">A</span><span lang="zh-Hant">有明確好處</span><span lang="en">Clear benefit</span></button>
+              <button class="filter-chip" type="button" data-grade-filter="B" aria-pressed="false"><span class="grade grade-b">B</span><span lang="zh-Hant">可能有好處</span><span lang="en">Likely</span></button>
+              <button class="filter-chip" type="button" data-grade-filter="C" aria-pressed="false"><span class="grade grade-c">C</span><span lang="zh-Hant">證據不足</span><span lang="en">Uncertain</span></button>
+              <button class="filter-chip" type="button" data-grade-filter="D" aria-pressed="false"><span class="grade grade-d">D</span><span lang="zh-Hant">無益或有害</span><span lang="en">No benefit</span></button>
+            </div>
+          </div>
+          <div class="lookup-results" id="lookupResults" aria-live="polite"></div>
+          <div class="lookup-empty" id="lookupEmpty" hidden>
+            <p class="callout-title"><span lang="zh-Hant">還沒有這個品項的整理</span><span lang="en">Not covered yet</span></p>
+            <p><span lang="zh-Hant">我們會持續新增。在此之前，看診時可以把產品成分標示帶給醫師或藥師看，也可以用</span><span lang="en">We are adding more. Meanwhile, bring the product label to your doctor or pharmacist, or use the</span> <a href="./visit-prep.html"><span lang="zh-Hant">看診準備單</span><span lang="en">visit prep sheet</span></a><span lang="zh-Hant">把它列進去。</span><span lang="en">.</span></p>
+          </div>
+          <p class="lookup-legend"><span lang="zh-Hant">等級評的是「某個做法，用在某個目的上」的證據，不是評產品好不好。「健康食品」小綠人標章代表通過特定功效評估，不等於能預防疾病。</span><span lang="en">A grade rates the evidence for one use, not the product. Taiwan’s “health food” mark means a specific claim was reviewed; it does not mean the product prevents disease.</span></p>
+        </div>
+      </section>
+      <section class="section tight no-print" id="safety">
+        <div class="wrap">
+          <div class="safety">
+            <span class="safety-icon" aria-hidden="true">!</span>
+            <div>
+              <h2><span lang="zh-Hant">本站提供健康教育，不是診斷或治療。</span><span lang="en">This site offers health education, not diagnosis or treatment.</span></h2>
+              <p>
+                <span lang="zh-Hant">請不要因為本站內容自行開始、停止或調整任何藥物。<strong>如果出現胸痛、嚴重呼吸困難、昏厥或其他緊急症狀，請立即撥打 119 或前往急診。</strong>若你有慢性病、懷孕，或曾被醫療人員限制活動，請依照自己的醫療計畫。</span>
+                <span lang="en">Do not start, stop, or change any medicine because of this site. <strong>If you have chest pain, severe shortness of breath, fainting, or another emergency symptom, call your local emergency number (119 in Taiwan) or go to an emergency department now.</strong> If you have a chronic condition, are pregnant, or have been told to limit activity, follow your own clinical plan.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer no-print">
+      <div class="wrap">
+        <div class="footer-legal" style="margin-top: 0; padding-top: 0; border-top: 0">
+          <span>© <span data-year>2026</span> SuppleScience / 實證補給</span>
+          <span><span lang="zh-Hant">獨立經營的健康教育網站，與任何醫療機構無關。</span><span lang="en">An independent health-education site, not affiliated with any healthcare institution.</span></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

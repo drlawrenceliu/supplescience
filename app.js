@@ -31,6 +31,13 @@ const translations = {
     bpInvalid: "血壓請用「收縮壓/舒張壓」格式，例如 120/80。",
     resetConfirm: "確定要清除這台裝置上的所有 21 天紀錄嗎？此動作無法復原。",
     resetDone: "本機紀錄已清除。",
+    roundLabel: "第 {day} 輪",
+    newRound: "開始第 {day} 輪",
+    newRoundConfirm: "開始新一輪？這一輪的紀錄會保留在這台裝置上，進度會從第 1 天重新開始。",
+    reminderSaved: "已下載。打開檔案即可加入行事曆。",
+    reminderMissing: "請先選擇開始日期與時間。",
+    reminderTitle: "實證補給：今天的 21 天小行動",
+    reminderBody: "打開 21 天計畫，完成今天 2–10 分鐘的小行動：",
   },
   en: {
     complete: "complete",
@@ -56,6 +63,13 @@ const translations = {
     bpInvalid: "Enter blood pressure as systolic/diastolic, e.g. 120/80.",
     resetConfirm: "Clear all 21-day records on this device? This cannot be undone.",
     resetDone: "Local records cleared.",
+    roundLabel: "Round {day}",
+    newRound: "Start round {day}",
+    newRoundConfirm: "Start a new round? This round stays saved on this device and progress restarts at day 1.",
+    reminderSaved: "Downloaded. Open the file to add it to your calendar.",
+    reminderMissing: "Choose a start date and time first.",
+    reminderTitle: "SuppleScience: today’s 21-day action",
+    reminderBody: "Open the 21-day reset and do today’s 2–10 minute action: ",
   },
 };
 
@@ -255,7 +269,7 @@ const dayContent = [
 let state = loadState();
 
 function emptyState() {
-  return { activeDay: 1, completed: [], tasks: {}, checkins: {} };
+  return { activeDay: 1, completed: [], tasks: {}, checkins: {}, round: 1, history: [] };
 }
 
 function loadState() {
@@ -268,6 +282,8 @@ function loadState() {
         completed: parsed.completed.filter(validDay),
         tasks: parsed.tasks && typeof parsed.tasks === "object" ? parsed.tasks : {},
         checkins: parsed.checkins && typeof parsed.checkins === "object" ? parsed.checkins : {},
+        round: Number.isInteger(parsed.round) && parsed.round >= 1 ? parsed.round : 1,
+        history: Array.isArray(parsed.history) ? parsed.history : [],
       };
     }
   } catch (error) {
@@ -298,6 +314,7 @@ function contentFor(value) {
 }
 
 const pad = (n) => String(n).padStart(2, "0");
+const localDate = (d = new Date()) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 function renderProgress() {
   const completedCount = state.completed.length;
@@ -307,7 +324,10 @@ function renderProgress() {
   ring.setAttribute("aria-label", `${percentage}% ${translate("complete")}`);
   document.getElementById("progressPercent").textContent = `${percentage}%`;
   document.getElementById("progressRingLabel").textContent = translate("complete");
-  document.getElementById("progressCaption").textContent = `${completedCount} / ${TOTAL_DAYS} ${translate("days")}`;
+  const roundText = state.round > 1 ? `${translate("roundLabel", state.round)} · ` : "";
+  document.getElementById("progressCaption").textContent = `${roundText}${completedCount} / ${TOTAL_DAYS} ${translate("days")}`;
+  document.getElementById("roundBox").hidden = completedCount < TOTAL_DAYS;
+  document.getElementById("newRoundButton").textContent = translate("newRound", state.round + 1);
   document.getElementById("mapCount").textContent = `${completedCount} / ${TOTAL_DAYS}`;
 
   let stage = "Mid";
@@ -456,7 +476,149 @@ function resetAll() {
   setFormNote("resetDone");
 }
 
+function startNewRound() {
+  if (!window.confirm(translate("newRoundConfirm"))) return;
+  state.history.push({
+    round: state.round,
+    endedOn: localDate(),
+    completed: state.completed,
+    tasks: state.tasks,
+    checkins: state.checkins,
+  });
+  state = { ...state, activeDay: 1, completed: [], tasks: {}, checkins: {}, round: state.round + 1 };
+  saveState();
+  renderAll();
+  document.getElementById("todayCard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ---- Calendar reminder (.ics) — generated in the browser, nothing is sent anywhere ----
+function icsEscape(text) {
+  return text.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+}
+
+// RFC 5545 lines must be folded at 75 octets; fold on UTF-8 byte length without splitting characters.
+function icsFold(line) {
+  const encoder = new TextEncoder();
+  const parts = [];
+  let current = "";
+  let limit = 75;
+  for (const char of line) {
+    if (encoder.encode(current + char).length > limit) {
+      parts.push(current);
+      current = char;
+      limit = 74;
+    } else {
+      current += char;
+    }
+  }
+  parts.push(current);
+  return parts.join("\r\n ");
+}
+
+function downloadReminder() {
+  const date = document.getElementById("reminderDate").value;
+  const time = document.getElementById("reminderTime").value;
+  const note = document.getElementById("reminderNote");
+  if (!date || !time) {
+    note.textContent = translate("reminderMissing");
+    return;
+  }
+  const remaining = Math.max(1, TOTAL_DAYS - state.completed.length);
+  const url = new URL("./reset.html", window.location.href).href;
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const start = `${date.replace(/-/g, "")}T${time.replace(":", "")}00`;
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//SuppleScience//21-Day Reset//ZH-TW",
+    "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    `UID:reset-${Date.now()}@supplescience`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART:${start}`,
+    "DURATION:PT10M",
+    `RRULE:FREQ=DAILY;COUNT=${remaining}`,
+    `SUMMARY:${icsEscape(translate("reminderTitle"))}`,
+    `DESCRIPTION:${icsEscape(translate("reminderBody") + url)}`,
+    `URL:${url}`,
+    "BEGIN:VALARM",
+    "ACTION:DISPLAY",
+    "TRIGGER:PT0M",
+    `DESCRIPTION:${icsEscape(translate("reminderTitle"))}`,
+    "END:VALARM",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ];
+  const blob = new Blob([lines.map(icsFold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "supplescience-21-day-reminder.ics";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  note.textContent = translate("reminderSaved");
+}
+
+// ---- Printable 21-day summary (rebuilt into #resetPrint right before printing) ----
+function buildSummary() {
+  const sheet = document.getElementById("resetPrint");
+  sheet.innerHTML = "";
+  const add = (tag, text, className) => {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (text !== undefined) el.textContent = text;
+    sheet.appendChild(el);
+    return el;
+  };
+  const head = add("div", undefined, "print-head");
+  const h1 = document.createElement("h1");
+  h1.textContent = `21 天心臟代謝重整・第 ${state.round} 輪摘要`;
+  const meta = document.createElement("p");
+  meta.textContent = `列印日期：${localDate()}　完成：${state.completed.length} / ${TOTAL_DAYS} 天`;
+  head.append(h1, meta);
+
+  const table = add("table");
+  const header = document.createElement("tr");
+  ["天", "主題", "完成", "體重 kg", "血壓 mmHg", "睡眠 hr", "活動 min"].forEach((label) => {
+    const th = document.createElement("th");
+    th.textContent = label;
+    header.appendChild(th);
+  });
+  table.appendChild(header);
+  dayContent.forEach((item, index) => {
+    const day = index + 1;
+    const checkin = state.checkins[day] || {};
+    const tasks = state.tasks[day] || [];
+    const done = state.completed.includes(day) ? "✓" : tasks.some(Boolean) ? "部分" : "";
+    const row = document.createElement("tr");
+    [pad(day), item.title.zh, done, checkin.weight || "", checkin.bp || "", checkin.sleep || "", checkin.movement || ""].forEach((value) => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      row.appendChild(td);
+    });
+    table.appendChild(row);
+  });
+
+  add("h2", "我想保留的行動");
+  const lines1 = add("div", undefined, "print-lines");
+  for (let i = 0; i < 2; i += 1) lines1.appendChild(document.createElement("span"));
+  add("h2", "想和醫師討論的問題");
+  const lines2 = add("div", undefined, "print-lines");
+  for (let i = 0; i < 3; i += 1) lines2.appendChild(document.createElement("span"));
+  add("p", "紀錄的數字只供自己觀察與和醫療人員討論，本表不做任何解讀，也不能用來自我診斷。實證補給 SuppleScience", "print-foot");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  const tomorrow = new Date(Date.now() + 86400000);
+  document.getElementById("reminderDate").value = localDate(tomorrow);
+  document.getElementById("reminderButton").addEventListener("click", downloadReminder);
+  document.getElementById("printSummaryButton").addEventListener("click", () => {
+    buildSummary();
+    window.print();
+  });
+  window.addEventListener("beforeprint", buildSummary);
+  document.getElementById("newRoundButton").addEventListener("click", startNewRound);
   document.getElementById("checkinForm").addEventListener("submit", saveCheckin);
   document.getElementById("checkinForm").addEventListener("input", () => setFormNote(""));
   document.getElementById("completeButton").addEventListener("click", completeDay);
