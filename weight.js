@@ -15,12 +15,6 @@ const BMI_BANDS = [
 ];
 const WAIST_CUTOFF = { m: 90, f: 80 };
 
-// End-of-trial mean % weight change (verified against the published abstracts).
-const TRIAL_REFS = [
-  { week: 68, drug: -14.9, placebo: -2.4, label: "STEP 1" },
-  { week: 72, drug: -20.9, placebo: -3.1, label: "SURMOUNT-1" },
-  { week: 44, drug: -12.1, placebo: -2.2, label: "STEP 12" },
-];
 
 const HABITS = [
   {
@@ -59,7 +53,7 @@ const HABITS = [
 let data = loadWeight();
 
 function emptyWeight() {
-  return { profile: { sex: "", height: "", weight: "", waist: "" }, entries: [], habits: {}, refs: false };
+  return { profile: { sex: "", height: "", weight: "", waist: "" }, entries: [], habits: {}, refs: false, treatment: { drug: "", start: "", doses: [] } };
 }
 
 function loadWeight() {
@@ -72,6 +66,11 @@ function loadWeight() {
         entries: Array.isArray(saved.entries) ? saved.entries.filter((e) => /^\d{4}-\d{2}-\d{2}$/.test(e.date) && Number(e.kg) > 0) : [],
         habits: saved.habits && typeof saved.habits === "object" ? saved.habits : {},
         refs: Boolean(saved.refs),
+        treatment: {
+          drug: ["semaglutide", "tirzepatide", "other"].includes(saved.treatment?.drug) ? saved.treatment.drug : "",
+          start: /^\d{4}-\d{2}-\d{2}$/.test(saved.treatment?.start || "") ? saved.treatment.start : "",
+          doses: Array.isArray(saved.treatment?.doses) ? saved.treatment.doses.filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d.date) && Number(d.mg) >= 0) : [],
+        },
       };
     }
   } catch (error) {
@@ -192,17 +191,115 @@ function renderBMI() {
   box.append(el("p", "calc-note", "分類依衛生福利部國民健康署成人標準：BMI 24–27 為過重、27 以上為肥胖；腰圍男性 ≥90 公分、女性 ≥80 公分為腹部肥胖。BMI 不適用於孕婦、18 歲以下與肌肉量特別高的人。"));
 }
 
-// ---------- Step 2: log & chart ----------
+// ---------- Treatment ----------
+const onTrackedDrug = () => ["semaglutide", "tirzepatide"].includes(data.treatment.drug) && data.treatment.start;
+
+function sortedDoses() {
+  return [...data.treatment.doses].sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function currentDose() {
+  const today = toISO(new Date());
+  const past = sortedDoses().filter((d) => d.date <= today);
+  return past[past.length - 1] || null;
+}
+
+const doseLabel = (mg) => (Number(mg) === 0 ? "停藥" : `${Number(mg)} mg`);
+
+function renderTreatment() {
+  const t = data.treatment;
+  document.getElementById("drugSelect").value = t.drug;
+  document.getElementById("startDate").value = t.start;
+  const area = document.getElementById("doseArea");
+  area.hidden = !t.drug;
+  const select = document.getElementById("doseSelect");
+  const other = document.getElementById("doseOther");
+  select.innerHTML = "";
+  const doses = TITRATION[t.drug]?.doses || [];
+  doses.forEach((mg) => {
+    const o = el("option", "", `${mg} mg`);
+    o.value = String(mg);
+    select.append(o);
+  });
+  if (!doses.length) {
+    const o = el("option", "", "填寫劑量");
+    o.value = "custom";
+    select.append(o);
+  }
+  const stop = el("option", "", "停藥");
+  stop.value = "0";
+  select.append(stop);
+  other.hidden = select.value !== "custom";
+
+  const list = document.getElementById("doseList");
+  list.innerHTML = "";
+  sortedDoses().forEach((d) => {
+    const li = el("li", "custom-item");
+    li.append(el("span", "", `${d.date}　${doseLabel(d.mg)}`));
+    const remove = el("button", "text-button danger", "刪除");
+    remove.type = "button";
+    remove.addEventListener("click", () => {
+      data.treatment.doses = data.treatment.doses.filter((x) => !(x.date === d.date && x.mg === d.mg));
+      saveWeight();
+      renderAll();
+    });
+    li.append(remove);
+    list.append(li);
+  });
+}
+
+// ---------- Weight log & chart ----------
+// Returns the points to plot: x in weeks (since treatment start, or since the first entry), y in % change.
+function chartModel() {
+  const entries = sortedEntries();
+  if (!entries.length) return { points: [], base: null, mode: "none" };
+  if (onTrackedDrug()) {
+    const start = data.treatment.start;
+    const before = entries.filter((e) => e.date <= start);
+    let base = before[before.length - 1];
+    let baseNote = "";
+    if (!base) {
+      base = entries.find((e) => daysBetween(start, e.date) <= 28) || entries[0];
+      baseNote = `開始用藥前沒有體重紀錄，以 ${base.date} 的 ${fmt(base.kg)} 公斤作為起點。`;
+    }
+    const points = entries
+      .filter((e) => e.date >= base.date)
+      .map((e) => ({ x: Math.max(0, daysBetween(start, e.date) / 7), y: ((e.kg - base.kg) / base.kg) * 100, date: e.date, kg: e.kg }));
+    return { points, base, mode: "treatment", baseNote };
+  }
+  const base = entries[0];
+  return { points: entries.map((e) => ({ x: daysBetween(base.date, e.date) / 7, y: ((e.kg - base.kg) / base.kg) * 100, date: e.date, kg: e.kg })), base, mode: "log" };
+}
+
+function referenceSeries() {
+  const drug = data.treatment.drug;
+  const keys = drug === "tirzepatide" ? ["surmount1"] : ["step1", "step12"];
+  const series = [];
+  const legend = [];
+  keys.forEach((key) => {
+    const trial = TRIALS[key];
+    Object.entries(trial.arms).forEach(([arm, a]) => {
+      const alt = key === "step12" ? " alt" : "";
+      const cls = arm === "placebo" ? `ref-line-placebo${alt}` : `ref-line-drug${alt}${key === "surmount1" ? ` ${arm}` : ""}`;
+      series.push({ points: trial.weeks.map((w, i) => [w, a.values[i]]), cls });
+      legend.push({ cls, text: `${trial.name}：${a.label}（第 ${trial.weeks[trial.weeks.length - 1]} 週 ${a.values[a.values.length - 1]}%）` });
+    });
+  });
+  const notes = keys.map((k) => `${TRIALS[k].name}：${TRIALS[k].analysis}。${TRIALS[k].cite}`);
+  return { series, legend, notes };
+}
+
 function renderLog() {
   const entries = sortedEntries();
   const list = document.getElementById("logList");
   list.innerHTML = "";
   document.getElementById("logCount").textContent = entries.length ? `（${entries.length}）` : "";
-  const first = entries[0];
+  const model = chartModel();
   [...entries].reverse().forEach((entry) => {
     const li = el("li", "log-row");
-    const pct = first ? ((entry.kg - first.kg) / first.kg) * 100 : 0;
-    li.append(el("span", "log-date", entry.date), el("span", "log-kg", `${fmt(entry.kg)} kg`), el("span", "log-pct", entry === first ? "起點" : `${signed(pct)}%`));
+    const pct = model.base ? ((entry.kg - model.base.kg) / model.base.kg) * 100 : 0;
+    const isBase = model.base && entry.date === model.base.date;
+    li.append(el("span", "log-date", entry.date), el("span", "log-kg", `${fmt(entry.kg)} kg`), el("span", "log-pct", isBase ? "起點" : entry.date < model.base.date ? "—" : `${signed(pct)}%`));
     const remove = el("button", "icon-button", "×");
     remove.type = "button";
     remove.setAttribute("aria-label", `刪除 ${entry.date} 的紀錄`);
@@ -216,101 +313,178 @@ function renderLog() {
   });
 
   const stat = document.getElementById("chartStat");
-  if (entries.length === 0) stat.textContent = "加入第一筆紀錄後，這裡會畫出你的變化。";
-  else if (entries.length === 1) stat.textContent = `起點：${first.date}，${fmt(first.kg)} 公斤。之後每週記錄一次，就能看到趨勢。`;
+  const pts = model.points;
+  if (!entries.length) stat.textContent = "加入第一筆紀錄後，這裡會畫出你的變化。";
+  else if (pts.length <= 1) stat.textContent = `起點：${model.base.date}，${fmt(model.base.kg)} 公斤。之後每週記錄一次，就能看到趨勢。`;
   else {
-    const last = entries[entries.length - 1];
-    const diff = last.kg - first.kg;
-    const weeks = daysBetween(first.date, last.date) / 7;
-    stat.textContent = `${first.date} 到 ${last.date}（${fmt(weeks, weeks < 10 ? 1 : 0)} 週）：${signed(diff)} 公斤（${signed((diff / first.kg) * 100)}%）`;
+    const last = pts[pts.length - 1];
+    const diff = last.kg - model.base.kg;
+    const weeks = model.mode === "treatment" ? last.x : daysBetween(model.base.date, last.date) / 7;
+    stat.textContent = `${model.mode === "treatment" ? "用藥第" : "記錄"} ${fmt(weeks, weeks < 10 ? 1 : 0)} 週：${signed(diff)} 公斤（${signed(last.y)}%）`;
   }
-  renderChart(entries);
+  renderChart(model);
+  renderProgress(model);
 }
 
-function niceStep(range) {
-  if (range <= 4) return 1;
-  if (range <= 10) return 2;
-  return 5;
-}
-
-function renderChart(entries) {
+function renderChart(model) {
   const box = document.getElementById("chartBox");
-  box.innerHTML = "";
+  const legendBox = document.getElementById("chartLegend");
+  const noteBox = document.getElementById("refNote");
   const showRefs = data.refs;
-  document.getElementById("chartLegend").hidden = !showRefs;
-  document.getElementById("refNote").hidden = !showRefs;
-  if (!entries.length && !showRefs) {
+  if (!model.points.length && !showRefs) {
+    box.innerHTML = "";
     box.append(el("p", "chart-empty", "還沒有資料"));
+    legendBox.hidden = true;
+    noteBox.hidden = true;
     return;
   }
-  const first = entries[0];
-  const points = entries.map((e) => ({ x: first ? daysBetween(first.date, e.date) / 7 : 0, y: ((e.kg - first.kg) / first.kg) * 100, date: e.date, kg: e.kg }));
-
-  const lastX = points.length ? points[points.length - 1].x : 0;
-  let xMax = Math.max(4, Math.ceil(lastX * 1.15));
-  let yMin = Math.min(-2, ...points.map((p) => p.y));
-  let yMax = Math.max(1, ...points.map((p) => p.y));
+  const series = [];
+  const legend = [];
+  let notes = [];
   if (showRefs) {
-    xMax = Math.max(xMax, 76);
-    yMin = Math.min(yMin, -22);
+    const ref = referenceSeries();
+    series.push(...ref.series);
+    legend.push(...ref.legend);
+    notes = ref.notes;
   }
-  const step = niceStep(yMax - yMin);
-  yMin = Math.floor((yMin - 0.5) / step) * step;
-  yMax = Math.ceil((yMax + 0.5) / step) * step;
-  // Draw at the container's real pixel width so text stays readable on phones.
-  const W = Math.max(280, Math.min(900, Math.round(box.clientWidth - 16) || 640));
-  const narrow = W < 520;
-  const H = narrow ? 250 : 300;
-  const M = { l: 44, r: 12, t: 16, b: 34 };
-  const xStep = xMax <= 8 ? 1 : xMax <= 26 ? 4 : narrow ? 24 : 12;
-  const sx = (x) => M.l + (x / xMax) * (W - M.l - M.r);
-  const sy = (y) => M.t + ((yMax - y) / (yMax - yMin)) * (H - M.t - M.b);
-  const NS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
-  svg.setAttribute("class", "weight-chart");
-  svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", "體重變化百分比圖");
-  const add = (tag, attrs, text) => {
-    const n = document.createElementNS(NS, tag);
-    Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
-    if (text !== undefined) n.textContent = text;
-    svg.appendChild(n);
-    return n;
-  };
-
-  for (let y = yMin; y <= yMax + 1e-9; y += step) {
-    add("line", { x1: M.l, x2: W - M.r, y1: sy(y), y2: sy(y), class: y === 0 ? "axis-zero" : "grid" });
-    add("text", { x: M.l - 8, y: sy(y) + 4, class: "tick", "text-anchor": "end" }, `${y > 0 ? "+" : ""}${y}%`);
+  if (model.points.length) {
+    series.push({ points: model.points.map((p) => [p.x, p.y, `${p.date}：${fmt(p.kg)} kg（${signed(p.y)}%）`]), cls: "you-line", dots: true });
+    legend.unshift({ cls: "you", text: "你的紀錄" });
   }
-  for (let x = 0; x <= xMax; x += xStep) {
-    add("text", { x: sx(x), y: H - M.b + 20, class: "tick", "text-anchor": "middle" }, `${x}`);
-  }
-  add("text", { x: W - M.r, y: H - 4, class: "tick", "text-anchor": "end" }, "週");
-
-  if (showRefs) {
-    TRIAL_REFS.forEach((r) => {
-      add("circle", { cx: sx(r.week), cy: sy(r.placebo), r: 5, class: "ref-placebo" });
-      add("rect", { x: sx(r.week) - 5.5, y: sy(r.drug) - 5.5, width: 11, height: 11, transform: `rotate(45 ${sx(r.week)} ${sy(r.drug)})`, class: "ref-drug" });
-      if (narrow) {
-        add("text", { x: sx(r.week) - 9, y: sy(r.drug) - 2, class: "ref-label", "text-anchor": "end" }, r.label);
-        add("text", { x: sx(r.week) - 9, y: sy(r.drug) + 10, class: "ref-label", "text-anchor": "end" }, `${r.drug}%`);
-      } else {
-        add("text", { x: sx(r.week) - 9, y: sy(r.drug) + 4, class: "ref-label", "text-anchor": "end" }, `${r.label} ${r.drug}%`);
-      }
-    });
-  }
-
-  if (points.length > 1) {
-    add("polyline", { points: points.map((p) => `${sx(p.x)},${sy(p.y)}`).join(" "), class: "you-line" });
-  }
-  points.forEach((p) => {
-    const dot = add("circle", { cx: sx(p.x), cy: sy(p.y), r: points.length > 8 ? 3 : 4.5, class: "you-dot" });
-    const title = document.createElementNS(NS, "title");
-    title.textContent = `${p.date}：${fmt(p.kg)} kg（${signed(p.y)}%）`;
-    dot.appendChild(title);
+  const vlines = model.mode === "treatment"
+    ? sortedDoses().filter((d) => d.date >= data.treatment.start).map((d) => ({ x: daysBetween(data.treatment.start, d.date) / 7, label: doseLabel(d.mg) }))
+    : [];
+  const lastX = model.points.length ? model.points[model.points.length - 1].x : 0;
+  const refMax = showRefs ? Math.max(...series.filter((s) => !s.dots).flatMap((s) => s.points.map((p) => p[0]))) : 0;
+  drawLineChart(box, {
+    series,
+    vlines,
+    xMax: Math.max(4, Math.ceil(lastX * 1.15), refMax),
+    xLabel: model.mode === "treatment" ? "用藥週數" : "週",
+    ariaLabel: "體重變化百分比圖",
   });
-  box.append(svg);
+
+  legendBox.innerHTML = "";
+  legend.forEach((item) => {
+    const span = el("span");
+    span.append(el("i", `lg ${item.cls}`), el("span", "", item.text));
+    legendBox.append(span);
+  });
+  legendBox.hidden = legend.length === 0;
+  noteBox.hidden = !showRefs;
+  noteBox.innerHTML = "";
+  if (showRefs) {
+    noteBox.append(el("span", "", "研究曲線是平均值，不是目標；每個人的反應差異很大。曲線由論文圖表判讀，誤差約 ±0.5 個百分點。是否用藥、用多少，由醫師決定。"));
+    notes.forEach((n) => noteBox.append(el("span", "ref-cite", n)));
+    if (model.baseNote) noteBox.append(el("span", "ref-cite", model.baseNote));
+  }
+}
+
+// ---------- Progress panel: phase, comparison with trials, milestones ----------
+function progressBox(title, lines, tone = "") {
+  const box = el("div", `progress-box ${tone}`);
+  box.append(el("p", "progress-title", title));
+  lines.forEach((line) => {
+    if (typeof line === "string") box.append(el("p", "", line));
+    else box.append(line);
+  });
+  return box;
+}
+
+function renderProgress(model) {
+  const panel = document.getElementById("progressPanel");
+  panel.innerHTML = "";
+  const drug = data.treatment.drug;
+  const tracked = onTrackedDrug();
+  const pts = model.points;
+  const last = pts[pts.length - 1];
+  const best = pts.length ? Math.min(...pts.map((p) => p.y)) : 0;
+  const dose = currentDose();
+
+  // Stopped
+  if (tracked && dose && Number(dose.mg) === 0) {
+    panel.append(progressBox("停藥之後，研究怎麼說", [
+      "在 STEP 4 中，用 semaglutide 20 週後改用安慰劑的人，接下來 48 週體重平均回升 6.9%；繼續用藥的人則再減少 7.9%。改用安慰劑的人中，82% 體重有回升。",
+      "SURMOUNT-MAINTAIN 中，用 tirzepatide 60 週後：繼續原劑量的人一年內體重幾乎不變（−0.2%），降到 5 mg 的人回升 7.0%，改用安慰劑的人回升 15.2%。",
+      "這不是失敗，而是肥胖這個慢性病的特性。停藥後最能幫上忙的，是每週量體重、維持肌力訓練與規律活動，並和醫師約好追蹤時間。",
+    ], "warn"));
+  }
+
+  if (tracked) {
+    const weeks = Math.max(0, daysBetween(data.treatment.start, toISO(new Date())) / 7);
+    const tit = TITRATION[drug];
+    const phaseLines = [];
+    if (dose && Number(dose.mg) > 0) phaseLines.push(`你記錄的目前劑量：${doseLabel(dose.mg)}（${dose.date} 起）。`);
+    if (weeks < tit.maintenanceWeek) {
+      phaseLines.push(drug === "semaglutide"
+        ? `研究中的做法是每 4 週調高一次劑量，約第 16 週達到 2.4 mg。你目前在第 ${fmt(weeks, 0)} 週。實際何時調整、調到多少，由你的醫師依反應與副作用決定。`
+        : `研究中的做法是每 4 週增加 2.5 mg，5、10、15 mg 分別在第 4、12、20 週達到。你目前在第 ${fmt(weeks, 0)} 週。實際何時調整、調到多少，由你的醫師決定。`);
+      phaseLines.push(drug === "semaglutide"
+        ? "腸胃不適最常出現在這個階段。STEP 1 中約 44% 的人曾噁心，每次噁心的中位持續時間約 8 天；因腸胃副作用停藥的人約 4.5%，多發生在前 12 週。"
+        : "腸胃不適最常出現在這個階段。SURMOUNT-1 中約 25–33% 的人曾噁心、19–23% 腹瀉，多為輕度到中度、在調整劑量期出現。");
+      phaseLines.push("研究中處理腸胃不適的順序：先調整吃法（慢慢吃、少量、吃飽就停，可把三餐分成四餐以上），仍不舒服時由醫師評估症狀藥物，或暫緩調高劑量。請和你的醫師討論，不要自行跳過或加倍劑量。");
+      panel.append(progressBox(`調整劑量期・第 ${fmt(weeks, 0)} 週`, phaseLines));
+    } else {
+      phaseLines.push("研究中，這時多數人已在維持劑量。體重下降通常會逐漸變慢，最後進入平台期，這是正常的。");
+      panel.append(progressBox(`維持期・第 ${fmt(weeks, 0)} 週`, phaseLines));
+    }
+  }
+
+  // Comparison with the trial average at the same week
+  if (tracked && last && last.x >= 2) {
+    const w = last.x;
+    let refText = "";
+    if (drug === "semaglutide") {
+      const s1 = curveAt(TRIALS.step1.weeks, TRIALS.step1.arms.drug.values, w);
+      const s12 = curveAt(TRIALS.step12.weeks, TRIALS.step12.arms.drug.values, w);
+      refText = [s1 !== null && `STEP 1 約 ${fmt(s1)}%`, s12 !== null && `STEP 12（台灣、中國大陸）約 ${fmt(s12)}%`].filter(Boolean).join("、");
+    } else {
+      const t = TRIALS.surmount1;
+      const lo = curveAt(t.weeks, t.arms.d5.values, w);
+      const hi = curveAt(t.weeks, t.arms.d15.values, w);
+      if (lo !== null) refText = `SURMOUNT-1 約 ${fmt(lo)}%（5 mg 組）到 ${fmt(hi)}%（15 mg 組）`;
+    }
+    if (refText) {
+      // "Ahead" = at or below the lower-intensity reference (STEP 1 semaglutide, or the 5 mg arm).
+      const ref = drug === "semaglutide"
+        ? curveAt(TRIALS.step1.weeks, TRIALS.step1.arms.drug.values, w) ?? curveAt(TRIALS.step12.weeks, TRIALS.step12.arms.drug.values, w)
+        : curveAt(TRIALS.surmount1.weeks, TRIALS.surmount1.arms.d5.values, w);
+      const ahead = ref !== null && last.y <= ref + 0.5;
+      panel.append(progressBox("和研究平均相比", [
+        `用藥第 ${fmt(w, 0)} 週，研究中的平均體重變化：${refText}。你目前是 ${signed(last.y)}%。`,
+        ahead
+          ? "你的進度和研究平均相近或更快。體重下降較快時，更要顧好蛋白質與肌力訓練，也留意是否吃得太少、喝水不夠。"
+          : "減得比研究平均慢，不代表失敗：研究中也有不少人減得較少，而且研究參與者的起始體重多半比較重。可以帶著這張圖和醫師討論。",
+      ]));
+    }
+  }
+
+  // Milestones
+  if (pts.length >= 2) {
+    const reached = [5, 10, 15, 20].filter((m) => best <= -m);
+    const chips = el("div", "milestones");
+    [5, 10, 15, 20].forEach((m) => chips.append(el("span", `milestone${reached.includes(m) ? " on" : ""}`, `${m}%`)));
+    const lines = [chips];
+    const top = reached[reached.length - 1];
+    if (top) {
+      if (drug === "semaglutide") {
+        const p = TRIALS.step1.responders[top];
+        lines.push(`你已經減少 ${top}% 以上。STEP 1 中，用藥 68 週後有 ${p}% 的人達到這個程度${TRIALS.step12.responders[top] ? `；台灣參與的 STEP 12 則是 ${TRIALS.step12.responders[top]}%（44 週）` : ""}。`);
+      } else if (drug === "tirzepatide") {
+        const r = TRIALS.surmount1.responders[top];
+        lines.push(`你已經減少 ${top}% 以上。SURMOUNT-1 中，用藥 72 週後各劑量組有 ${r.d5}–${r.d15}% 的人達到這個程度。`);
+      } else {
+        lines.push(`你已經減少 ${top}% 以上。在 STEP 1 只接受飲食與運動諮詢的安慰劑組中，68 週後約 31.5% 的人減少 5% 以上——你做到了很多人做不到的事。`);
+      }
+      lines.push("研究顯示，體重減少約 5% 以上，血壓、血糖與血脂往往開始改善。下次看診時可以請醫師一起看看。");
+    } else {
+      lines.push("第一個里程碑是 5%。以 80 公斤為例，大約是 4 公斤。");
+    }
+    if (best <= -5) {
+      lines.push("減掉的不全是脂肪：在 STEP 12 台灣受試者的身體組成研究中，減少的體重約 75% 是脂肪、25% 是肌肉等非脂肪組織。每週 2 次肌力訓練與足夠蛋白質，可以幫忙保住肌肉。");
+    }
+    panel.append(progressBox("里程碑", lines.filter(Boolean)));
+  }
 }
 
 // ---------- Step 3: habits ----------
@@ -407,6 +581,7 @@ function renderCoach() {
 }
 
 function renderAll() {
+  renderTreatment();
   renderBMI();
   renderLog();
   renderHabits();
@@ -463,6 +638,34 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAll();
   });
 
+  document.getElementById("drugSelect").addEventListener("change", (event) => {
+    data.treatment.drug = event.target.value;
+    if (!data.treatment.drug) data.treatment.doses = [];
+    saveWeight();
+    renderAll();
+  });
+  document.getElementById("startDate").addEventListener("change", (event) => {
+    data.treatment.start = event.target.value;
+    saveWeight();
+    renderAll();
+  });
+  document.getElementById("doseSelect").addEventListener("change", (event) => {
+    document.getElementById("doseOther").hidden = event.target.value !== "custom";
+  });
+  const doseDate = document.getElementById("doseDate");
+  doseDate.value = toISO(new Date());
+  document.getElementById("doseForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const choice = document.getElementById("doseSelect").value;
+    const mg = choice === "custom" ? Number(document.getElementById("doseOther").value) : Number(choice);
+    if (!doseDate.value || !(mg >= 0)) return;
+    data.treatment.doses = data.treatment.doses.filter((d) => d.date !== doseDate.value);
+    data.treatment.doses.push({ date: doseDate.value, mg });
+    if (!data.treatment.start && mg > 0) data.treatment.start = doseDate.value;
+    saveWeight();
+    renderAll();
+  });
+
   const refToggle = document.getElementById("refToggle");
   refToggle.checked = data.refs;
   refToggle.addEventListener("change", () => {
@@ -491,7 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth === lastWidth) return;
     lastWidth = window.innerWidth;
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => renderChart(sortedEntries()), 150);
+    resizeTimer = setTimeout(() => renderChart(chartModel()), 150);
   });
 
   renderAll();

@@ -25,6 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./site.js"></script>
+    <script defer src="./trial-data.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main"><span lang="zh-Hant">跳到主要內容</span><span lang="en">Skip to content</span></a>
@@ -80,7 +81,7 @@
             <li><a href="#who">誰適合考慮</a></li>
             <li><a href="#effect">效果有多大</a></li>
             <li><a href="#heart">不只是體重：心血管</a></li>
-            <li><a href="#side-effects">副作用與警訊</a></li>
+            <li><a href="#side-effects">劑量與副作用</a></li>
             <li><a href="#muscle">別讓肌肉一起流失</a></li>
             <li><a href="#stopping">停藥之後</a></li>
             <li><a href="#safe-use">安全取得與使用</a></li>
@@ -142,6 +143,13 @@
           </div>
           <p>在 STEP 12 中，semaglutide 組有 80.5% 的人體重減少至少 5%，安慰劑組則是 24.4%<sup><a href="#ref-10">10</a></sup>。這是目前最貼近台灣族群的大型隨機試驗資料。</p>
           <p>要注意的是，「平均」代表每個人的反應不同：有些人減得比平均多，也有一部分人減得很少。醫師通常會在達到維持劑量一段時間後，評估效果是否值得繼續。</p>
+          <h3>體重是怎麼一路下降的？</h3>
+          <p>下圖是研究中每次回診的平均體重變化。前幾個月下降最快，之後逐漸變慢，大約一年左右進入平台期。</p>
+          <div class="chart-card">
+            <div class="filter-row chart-tabs" role="group" aria-label="選擇研究" data-tabs-for="effectChart"><button class="filter-chip" type="button" data-chart-tab="step1" aria-pressed="true">STEP 1</button><button class="filter-chip" type="button" data-chart-tab="surmount1" aria-pressed="false">SURMOUNT-1</button><button class="filter-chip" type="button" data-chart-tab="step12" aria-pressed="false">STEP 12（台灣）</button></div>
+            <div class="chart-box" id="effectChart" data-trial-chart="step1"></div>
+          </div>
+          <p class="table-note">曲線由論文圖表判讀（誤差約 ±0.2–0.5 個百分點）。STEP 1、STEP 12 為所有隨機分配者的實際平均；SURMOUNT-1 為持續用藥者的平均，因此第 72 週數值（−22.5%）略高於上表的 −20.9%。想看自己和研究曲線的對照，可以用<a href="./weight.html">體重管理小幫手</a>。</p>
 
           <h2 id="heart"><span class="num">04</span>不只是體重：心血管的證據</h2>
           <p>SELECT 試驗納入 17,604 位<strong>已經有心血管疾病</strong>（如曾經心肌梗塞、中風或周邊動脈疾病）、BMI ≥27、但<strong>沒有糖尿病</strong>的成人。平均追蹤約 40 個月後，semaglutide 2.4 mg 組的主要心血管事件（心血管死亡、非致命心肌梗塞、非致命中風）為 6.5%，安慰劑組為 8.0%，相對風險降低約 20%<sup><a href="#ref-3">3</a></sup>。</p>
@@ -154,8 +162,44 @@
           </div>
           <p>這個結果是針對「已經有心血管疾病」的族群。對於沒有心血管疾病的人，是否也能降低心臟病與中風，仍需要更多研究。</p>
 
-          <h2 id="side-effects"><span class="num">05</span>常見副作用與需要警覺的情況</h2>
-          <p>最常見的是腸胃症狀：<strong>噁心、嘔吐、腹瀉、便秘、脹氣</strong>。多數發生在剛開始用藥或調高劑量時，通常會隨時間改善<sup><a href="#ref-1">1</a>,<a href="#ref-2">2</a></sup>。這也是為什麼劑量要由醫師按步驟慢慢增加。</p>
+          <h2 id="side-effects"><span class="num">05</span>劑量怎麼調、副作用怎麼應對</h2>
+          <h3>研究中的劑量調整方式</h3>
+          <p>這類藥物都從低劑量開始，每 4 週調高一次，目的是讓腸胃慢慢適應、減少副作用<sup><a href="#ref-1">1</a>,<a href="#ref-2">2</a>,<a href="#ref-10">10</a></sup>：</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>用藥週數</th><th>Semaglutide（週纖達）</th><th>Tirzepatide（猛健樂）</th></tr></thead>
+              <tbody>
+                <tr><td>第 1–4 週</td><td class="num">0.25 mg</td><td class="num">2.5 mg</td></tr>
+                <tr><td>第 5–8 週</td><td class="num">0.5 mg</td><td class="num">5 mg</td></tr>
+                <tr><td>第 9–12 週</td><td class="num">1.0 mg</td><td class="num">7.5 mg</td></tr>
+                <tr><td>第 13–16 週</td><td class="num">1.7 mg</td><td class="num">10 mg</td></tr>
+                <tr><td>第 17–20 週</td><td class="num">2.4 mg（維持）</td><td class="num">12.5 mg</td></tr>
+                <tr><td>第 21 週起</td><td class="num">2.4 mg（維持）</td><td class="num">15 mg（最高劑量）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">每週注射一次。SURMOUNT-1 把受試者分成 5、10、15 mg 三組，分別在第 4、12、20 週達到目標劑量並維持。</p>
+          <ul>
+            <li><strong>無法耐受時，研究怎麼做</strong>：SURMOUNT-1 的研究計畫書依序是：先調整吃法（少量、把三餐分成四餐以上、吃飽就停）→ 使用止吐或止瀉等症狀藥物 → 暫停一次劑量 → 降回前一個劑量<sup><a href="#ref-2">2</a></sup>。STEP 1 則允許停留在較低的劑量；到第 68 週，仍在用藥的人中約 90% 使用 2.4 mg<sup><a href="#ref-1">1</a></sup>。</li>
+            <li><strong>不是每個人都要用到最高劑量</strong>。醫師會依效果與副作用，決定何時調高、要不要停在較低劑量。</li>
+          </ul>
+          <div class="callout">
+            <p class="callout-title">這是研究的做法，不是你的處方</p>
+            <p>台灣核准的劑量與調整方式，以仿單和你的醫師為準。請不要自行加快調升、加倍劑量或補打多次。已在用藥的人，可以在<a href="./weight.html">體重管理小幫手</a>記錄醫師開立的劑量，追蹤自己的變化。</p>
+          </div>
+          <h3>常見副作用有多常見？</h3>
+          <p>最常見的是腸胃症狀：<strong>噁心、嘔吐、腹瀉、便秘、脹氣</strong>。多數是輕度到中度、暫時性的，主要發生在調整劑量期<sup><a href="#ref-1">1</a>,<a href="#ref-2">2</a>,<a href="#ref-10">10</a></sup>。</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>研究（用藥組）</th><th>噁心</th><th>腹瀉</th><th>嘔吐</th><th>便秘</th><th>因副作用停藥</th></tr></thead>
+              <tbody>
+                <tr><td>STEP 1（semaglutide）</td><td class="num">44%</td><td class="num">32%</td><td class="num">25%</td><td class="num">23%</td><td class="num">7.0%（安慰劑 3.1%）</td></tr>
+                <tr><td>SURMOUNT-1（tirzepatide 5–15 mg）</td><td class="num">25–33%</td><td class="num">19–23%</td><td class="num">8–12%</td><td class="num">12–17%</td><td class="num">4.3–7.1%（安慰劑 2.6%）</td></tr>
+                <tr><td>STEP 12（台灣、中國大陸）</td><td class="num">18%</td><td class="num">19%</td><td class="num">10%</td><td class="num">14%</td><td class="num">1.2%（安慰劑 1.2%）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">整個研究期間曾發生的比例。STEP 1 中，每次噁心的中位持續時間約 8 天；因腸胃副作用停藥的情況多發生在前 12 週<sup><a href="#ref-1">1</a></sup>。</p>
           <h3>減少腸胃不適的生活技巧</h3>
           <ul>
             <li>少量多餐，覺得飽就停，不要「吃完盤子裡的東西」。</li>
@@ -183,6 +227,7 @@
 
           <h2 id="muscle"><span class="num">06</span>體重減少，別讓肌肉一起流失</h2>
           <p>任何減重方式都會同時減少脂肪與部分非脂肪組織（包括肌肉）。在 STEP 1 與 SURMOUNT-1 的身體組成子研究中，以雙能量 X 光（DXA）測量，減掉的體重約有 <strong>1/4 到 4 成</strong>來自非脂肪組織<sup><a href="#ref-1">1</a>,<a href="#ref-2">2</a></sup>。</p>
+          <p>在 STEP 12 的<strong>台灣受試者</strong>（80 人）身體組成分析中，semaglutide 組減少的體重約 <strong>75% 是脂肪、25% 是非脂肪組織</strong>，內臟脂肪減少約 36%<sup><a href="#ref-10">10</a></sup>。</p>
           <p>對年輕人來說這可能影響不大，但對長者或原本肌肉量就少的人，肌肉流失可能影響體力、平衡與日常生活能力。</p>
           <div class="claim">
             <span class="grade grade-b">B</span>
@@ -223,6 +268,12 @@
               <p>停用 GLP-1 類藥物後，多數人的體重會逐漸回升。</p>
             </div>
           </div>
+          <p>下圖是兩個試驗中，隨機分組後各組的平均體重變化（紅色虛線為隨機分組的時間點）：</p>
+          <div class="chart-card">
+            <div class="filter-row chart-tabs" role="group" aria-label="選擇研究" data-tabs-for="stopChart"><button class="filter-chip" type="button" data-chart-tab="step4" aria-pressed="true">STEP 4（semaglutide）</button><button class="filter-chip" type="button" data-chart-tab="maintain" aria-pressed="false">SURMOUNT-MAINTAIN（tirzepatide）</button></div>
+            <div class="chart-box" id="stopChart" data-trial-chart="step4"></div>
+          </div>
+          <p class="table-note">曲線由論文圖表判讀，誤差約 ±0.5 個百分點；為持續追蹤者的平均。STEP 4 中，改用安慰劑的人有 82% 體重回升；SURMOUNT-MAINTAIN 中，能保住 80% 以上減重成果的比例為：繼續原劑量 78%、降到 5 mg 42%、改用安慰劑 10%<sup><a href="#ref-4">4</a>,<a href="#ref-9">9</a></sup>。</p>
           <p>這個試驗告訴我們兩件事：第一，停藥後多數人體重會明顯回升；第二，<strong>降低劑量維持</strong>可能是停藥以外的另一個選項，雖然效果不如原劑量，個人反應也不同。</p>
           <div class="claim">
             <span class="grade grade-b">B</span>
@@ -267,8 +318,8 @@
           <section class="refs" aria-labelledby="refs-title">
             <h2 id="refs-title">參考文獻</h2>
             <ol>
-              <li id="ref-1">Wilding JPH, et al. Once-weekly semaglutide in adults with overweight or obesity (STEP 1). <em>N Engl J Med</em>. 2021;384:989–1002.</li>
-              <li id="ref-2">Jastreboff AM, et al. Tirzepatide once weekly for the treatment of obesity (SURMOUNT-1). <em>N Engl J Med</em>. 2022;387:205–216.</li>
+              <li id="ref-1">Wilding JPH, et al. Once-weekly semaglutide in adults with overweight or obesity (STEP 1). <em>N Engl J Med</em>. 2021;384:989–1002.（含補充資料與研究計畫書）</li>
+              <li id="ref-2">Jastreboff AM, et al. Tirzepatide once weekly for the treatment of obesity (SURMOUNT-1). <em>N Engl J Med</em>. 2022;387:205–216.（含補充資料與研究計畫書）</li>
               <li id="ref-3">Lincoff AM, et al. Semaglutide and cardiovascular outcomes in obesity without diabetes (SELECT). <em>N Engl J Med</em>. 2023;389:2221–2232.</li>
               <li id="ref-4">Rubino D, et al. Effect of continued weekly subcutaneous semaglutide vs placebo on weight loss maintenance in adults with overweight or obesity (STEP 4). <em>JAMA</em>. 2021;325:1414–1425.</li>
               <li id="ref-5">Wilding JPH, et al. Weight regain and cardiometabolic effects after withdrawal of semaglutide: the STEP 1 trial extension. <em>Diabetes Obes Metab</em>. 2022;24:1553–1564.</li>

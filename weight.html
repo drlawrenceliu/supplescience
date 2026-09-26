@@ -25,6 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./site.js"></script>
+    <script defer src="./trial-data.js"></script>
     <script defer src="./weight.js"></script>
   </head>
   <body>
@@ -85,9 +86,33 @@
               <div id="bmiResult" aria-live="polite"></div>
             </div>
 
-            <!-- Step 2: log & chart -->
+            <!-- Step 2: my treatment -->
+            <div class="prep-block" id="treatment">
+              <div class="block-head"><h2><span class="step">2</span><span lang="zh-Hant">我的治療</span><span lang="en">My treatment</span></h2><span class="microcopy"><span lang="zh-Hant">選填・有在用藥的人才需要</span><span lang="en">Optional</span></span></div>
+              <p class="action-lead"><span lang="zh-Hant">填上醫師開立的藥物、開始日期與每次劑量變更。圖表會改成從開始用藥那天算起，並和同一種藥物的研究曲線對照。</span><span lang="en">Enter the medicine your doctor prescribed, the start date and each dose change. The chart will count from your start date and compare with trials of the same medicine.</span></p>
+              <div class="field-grid two">
+                <label class="field" for="drugSelect"><span><span lang="zh-Hant">藥物</span><span lang="en">Medicine</span></span><span class="input-unit"><select id="drugSelect">
+                  <option value="">目前沒有使用減重藥物</option>
+                  <option value="semaglutide">Semaglutide（週纖達 Wegovy®）</option>
+                  <option value="tirzepatide">Tirzepatide（猛健樂 Mounjaro®）</option>
+                  <option value="other">其他</option>
+                </select></span></label>
+                <label class="field" for="startDate"><span><span lang="zh-Hant">開始用藥日期</span><span lang="en">Start date</span></span><span class="input-unit"><input id="startDate" type="date" /></span></label>
+              </div>
+              <div id="doseArea" hidden>
+                <form class="add-row dose-form" id="doseForm">
+                  <label class="field" for="doseDate"><span><span lang="zh-Hant">變更日期</span><span lang="en">Date</span></span><span class="input-unit"><input id="doseDate" type="date" required /></span></label>
+                  <label class="field" for="doseSelect"><span><span lang="zh-Hant">醫師開立的劑量</span><span lang="en">Prescribed dose</span></span><span class="input-unit"><select id="doseSelect"></select><input id="doseOther" type="number" inputmode="decimal" min="0" step="0.05" placeholder="mg" hidden /></span></label>
+                  <button class="btn btn-ghost btn-sm" type="submit"><span lang="zh-Hant">記錄劑量</span><span lang="en">Log dose</span></button>
+                </form>
+                <ul class="custom-list" id="doseList"></ul>
+              </div>
+              <p class="calc-note"><span lang="zh-Hant">這裡只記錄你的醫師開立的劑量，本工具不會建議、計算或調整任何劑量。</span><span lang="en">Record only the dose your doctor prescribed. This tool never suggests, calculates or adjusts doses.</span></p>
+            </div>
+
+            <!-- Step 3: log & chart -->
             <div class="prep-block" id="log">
-              <div class="block-head"><h2><span class="step">2</span><span lang="zh-Hant">體重紀錄</span><span lang="en">Weight log</span></h2><span class="microcopy"><span lang="zh-Hant">建議每週固定一天、同一時間量</span><span lang="en">Weigh once a week, same day and time</span></span></div>
+              <div class="block-head"><h2><span class="step">3</span><span lang="zh-Hant">體重紀錄</span><span lang="en">Weight log</span></h2><span class="microcopy"><span lang="zh-Hant">建議每週固定一天、同一時間量</span><span lang="en">Weigh once a week, same day and time</span></span></div>
               <form class="add-row" id="logForm">
                 <label class="field" for="logDate"><span><span lang="zh-Hant">日期</span><span lang="en">Date</span></span><span class="input-unit"><input id="logDate" type="date" required /></span></label>
                 <label class="field" for="logWeight"><span><span lang="zh-Hant">體重</span><span lang="en">Weight</span></span><span class="input-unit"><input id="logWeight" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="—" required /><small>kg</small></span></label>
@@ -97,15 +122,13 @@
 
               <div class="chart-head">
                 <p class="chart-stat" id="chartStat"></p>
-                <label class="toggle"><input type="checkbox" id="refToggle" /> <span><span lang="zh-Hant">顯示研究平均值</span><span lang="en">Show trial averages</span></span></label>
+                <label class="toggle"><input type="checkbox" id="refToggle" /> <span><span lang="zh-Hant">顯示研究平均曲線</span><span lang="en">Show trial curves</span></span></label>
               </div>
               <div class="chart-box" id="chartBox"></div>
-              <div class="chart-legend" id="chartLegend" hidden>
-                <span><i class="lg-you"></i><span lang="zh-Hant">你的紀錄</span><span lang="en">You</span></span>
-                <span><i class="lg-drug"></i><span lang="zh-Hant">藥物組平均</span><span lang="en">Drug-arm average</span></span>
-                <span><i class="lg-placebo"></i><span lang="zh-Hant">生活型態（安慰劑）組平均</span><span lang="en">Lifestyle / placebo average</span></span>
-              </div>
-              <p class="calc-note" id="refNote" hidden><span lang="zh-Hant">研究參考點為試驗結束時的平均體重變化：STEP 1（semaglutide 2.4 mg，68 週）、SURMOUNT-1（tirzepatide 15 mg，72 週）、STEP 12（台灣與中國大陸，semaglutide 2.4 mg，44 週）。兩組都有飲食與運動諮詢。這是平均值，不是目標；每個人的反應差異很大，是否用藥、用多少，由醫師決定。</span><span lang="en">Reference points are average weight change at the end of each trial: STEP 1 (semaglutide 2.4 mg, 68 weeks), SURMOUNT-1 (tirzepatide 15 mg, 72 weeks), STEP 12 (Taiwan and mainland China, 44 weeks). Both arms had lifestyle counselling. These are averages, not targets; medicine and dose are decided by your doctor.</span></p>
+              <div class="chart-legend" id="chartLegend" hidden></div>
+              <p class="calc-note" id="refNote" hidden></p>
+
+              <div class="progress-panel" id="progressPanel"></div>
 
               <details class="log-table-wrap">
                 <summary><span lang="zh-Hant">所有紀錄</span><span lang="en">All entries</span> <span class="count" id="logCount"></span></summary>
@@ -115,7 +138,7 @@
 
             <!-- Step 3: weekly habits -->
             <div class="prep-block" id="habits">
-              <div class="block-head"><h2><span class="step">3</span><span lang="zh-Hant">本週的五個習慣</span><span lang="en">This week’s five habits</span></h2><span class="microcopy" id="weekLabel"></span></div>
+              <div class="block-head"><h2><span class="step">4</span><span lang="zh-Hant">本週的五個習慣</span><span lang="en">This week’s five habits</span></h2><span class="microcopy" id="weekLabel"></span></div>
               <p class="action-lead"><span lang="zh-Hant">不用全部做到。勾選這週已經做到的，下週再挑一個加強。</span><span lang="en">You do not need all five. Tick what you managed this week and pick one to build next week.</span></p>
               <div class="task-list" id="habitList"></div>
             </div>

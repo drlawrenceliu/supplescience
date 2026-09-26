@@ -807,3 +807,48 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
   #log .add-row .field { flex: 1 1 100%; }
   #log .add-row .btn { flex: 1 1 100%; }
 }
+
+/* ---------- Trial curves, legends, progress panel ---------- */
+.weight-chart .ref-line-drug { fill: none; stroke: #8fb83a; stroke-width: 2.5; stroke-linejoin: round; }
+.weight-chart .ref-line-drug.alt { stroke: #2c649d; stroke-dasharray: 6 4; }
+.weight-chart .ref-line-drug.d5 { stroke: #c9e58a; }
+.weight-chart .ref-line-drug.d10 { stroke: #a3cc4f; }
+.weight-chart .ref-line-drug.d15 { stroke: #6f9a1f; }
+.weight-chart .ref-line-mid { fill: none; stroke: #d19a2a; stroke-width: 2.5; }
+.weight-chart .ref-line-placebo { fill: none; stroke: #9aa6a4; stroke-width: 2; stroke-dasharray: 2 4; stroke-linecap: round; }
+.weight-chart .ref-line-placebo.alt { stroke: #7f9dbd; }
+.weight-chart .vline { stroke: var(--coral); stroke-width: 1; stroke-dasharray: 3 3; }
+.weight-chart .vline-label { fill: var(--coral); font-family: "IBM Plex Mono", monospace; font-size: 10.5px; }
+.weight-chart .series-label { fill: var(--ink-3); font-family: "IBM Plex Mono", monospace; font-size: 10.5px; }
+.chart-legend { display: grid; gap: 6px; }
+.chart-legend .lg { flex: 0 0 22px; width: 22px; height: 0; border-top: 3px solid; border-radius: 2px; }
+.chart-legend .lg.you { width: 10px; flex-basis: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--ink); }
+.chart-legend .lg.ref-line-drug { border-color: #8fb83a; }
+.chart-legend .lg.ref-line-drug.alt { border-top-style: dashed; border-color: #2c649d; }
+.chart-legend .lg.d5 { border-color: #c9e58a; } .chart-legend .lg.d10 { border-color: #a3cc4f; } .chart-legend .lg.d15 { border-color: #6f9a1f; }
+.chart-legend .lg.ref-line-mid { border-color: #d19a2a; }
+.chart-legend .lg.ref-line-placebo { border-top: 3px dotted #9aa6a4; }
+.chart-legend .lg.ref-line-placebo.alt { border-top-color: #7f9dbd; }
+#refNote { display: grid; gap: 4px; }
+#refNote[hidden] { display: none; }
+.ref-cite { color: var(--ink-4); font-size: 12px; }
+.progress-panel { display: grid; gap: 10px; margin-top: 16px; }
+.progress-panel:empty { display: none; }
+.progress-box { padding: 16px 18px; border-radius: var(--r-md); background: var(--brand-tint); display: grid; gap: 8px; }
+.progress-box.warn { background: #fff3d6; }
+.progress-title { font-weight: 700; color: var(--ink); font-size: 15.5px; }
+.progress-box p { color: var(--ink-2); font-size: 14.5px; line-height: 1.75; }
+.milestones { display: flex; gap: 8px; }
+.milestone { display: grid; place-items: center; min-width: 52px; height: 34px; padding: 0 10px; border: 1.5px dashed var(--line-2); border-radius: 999px; color: var(--ink-4); font-family: var(--mono); font-size: 13px; font-weight: 600; background: var(--surface); }
+.milestone.on { border: 1.5px solid var(--ink); background: var(--lime); color: var(--ink); }
+.dose-form select { min-width: 0; }
+.trial-legend { display: grid; gap: 6px; margin-top: 10px; color: var(--ink-3); font-size: 13px; }
+.trial-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.chart-card { padding: 16px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); }
+.chart-card .chart-tabs { margin-bottom: 12px; }
+.chart-card .chart-box { border: 0; padding: 0; background: transparent; }
+.prose .chart-legend span { font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+.add-row { align-items: flex-end; }
+.add-row > .btn { flex: 0 0 auto; min-height: 46px; }
+.dose-form .field { flex: 1; }
+#doseList .custom-item { padding: 8px 14px; font-family: var(--mono); font-size: 14px; }
