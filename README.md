@@ -3,6 +3,11 @@
 Evidence-graded health education: 保健食品, GLP-1 and weight management, exercise, and nutrition,
 plus the **21-Day Heart & Metabolism Reset** self-tracking program.
 
+## Live site
+
+https://supplescience.github.io/ (GitHub organization `supplescience`, repo `supplescience.github.io`).
+Currently hidden from search engines (`noindex`).
+
 ## Pages
 - `index.html` — home and guide hub
 - `guide-glp1.html` — first evidence guide (draft, awaiting clinical review)
