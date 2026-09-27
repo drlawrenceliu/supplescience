@@ -5,7 +5,7 @@ plus the **21-Day Heart & Metabolism Reset** self-tracking program.
 
 ## Live site
 
-https://supplescience.github.io/ (GitHub organization `supplescience`, repo `supplescience.github.io`).
+https://evidenceforliving.com/ (custom domain; GitHub organization `supplescience`, repo `supplescience.github.io`).
 Public and indexable (`robots.txt`, `sitemap.xml`). Privacy policy: `privacy.html`.
 
 ## Pages
