@@ -34,6 +34,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="./images/hero-1600.jpg" media="(min-width: 761px)" />
+    <link rel="preload" as="image" href="./images/hero-900.jpg" media="(max-width: 760px)" />
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./site.js"></script>
   </head>
@@ -61,76 +63,22 @@
 
     <main id="main">
       <!-- Hero -->
-      <section class="hero">
-        <div class="wrap hero-grid">
-          <div>
-            <p class="eyebrow">Evidence, not hype</p>
-            <h1>
-              <span lang="zh-Hant">健康資訊很多，<br />先看<span class="hl">證據</span>再決定。</span>
-              <span lang="en">So much health advice.<br />Check the <span class="hl">evidence</span> first.</span>
-            </h1>
-            <p class="hero-lede">
-              <span lang="zh-Hant">從保健食品、GLP-1 減重藥物，到運動與飲食——我們把研究結果整理成看得懂、用得上的指南，並標示每一個說法背後的證據強度。</span>
-              <span lang="en">From supplements and GLP-1 weight-loss medicines to exercise and food, we turn research into clear, usable guides and show how strong the evidence is behind every claim.</span>
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="./guide-glp1.html"><span lang="zh-Hant">閱讀 GLP-1 指南</span><span lang="en">Read the GLP-1 guide</span><span class="arrow" aria-hidden="true">→</span></a>
-              <a class="btn btn-lime hero-tools" href="./tools.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2" /><rect x="13.5" y="3.5" width="7" height="7" rx="2" /><rect x="3.5" y="13.5" width="7" height="7" rx="2" /><rect x="13.5" y="13.5" width="7" height="7" rx="2" /></svg><span lang="zh-Hant">實用工具：BMI、熱量、保健食品速查</span><span lang="en">Tools: BMI, calories, supplement lookup</span><span class="arrow" aria-hidden="true">→</span></a>
-              <a class="btn btn-ghost" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the 21-day reset</span></a>
-            </div>
-            <ul class="hero-points">
-              <li><span lang="zh-Hant">每個說法標示證據等級</span><span lang="en">Every claim graded</span></li>
-              <li><span lang="zh-Hant">引用原始研究</span><span lang="en">Primary sources cited</span></li>
-              <li><span lang="zh-Hant">紀錄只存在你的裝置</span><span lang="en">Your records stay on your device</span></li>
-            </ul>
+      <section class="hero-photo">
+        <div class="wrap hero-photo-inner">
+          <p class="eyebrow">Evidence, not hype</p>
+          <h1>
+            <span lang="zh-Hant">健康資訊很多，<br />先看<span class="hl">證據</span>再決定。</span>
+            <span lang="en">So much health advice.<br />Check the <span class="hl">evidence</span> first.</span>
+          </h1>
+          <p class="hero-photo-lede">
+            <span lang="zh-Hant">保健食品、GLP-1、運動與飲食——每個說法都標示證據等級。</span>
+            <span lang="en">Supplements, GLP-1, exercise and food — every claim graded.</span>
+          </p>
+          <div class="hero-photo-actions">
+            <a class="btn btn-lime" href="./guide-glp1.html"><span lang="zh-Hant">閱讀 GLP-1 指南</span><span lang="en">Read the GLP-1 guide</span><span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn-on-photo" href="./tools.html"><span lang="zh-Hant">實用工具</span><span lang="en">Tools</span></a>
+            <a class="btn btn-on-photo" href="./reset.html"><span lang="zh-Hant">開始 21 天計畫</span><span lang="en">Start the 21-day reset</span></a>
           </div>
-
-          <aside class="snapshot" aria-labelledby="snapshotTitle">
-            <div class="snapshot-head">
-              <span class="snapshot-title" id="snapshotTitle"><span lang="zh-Hant">證據快照</span><span lang="en">Evidence snapshot</span></span>
-            </div>
-            <ul class="snapshot-list">
-              <li class="snapshot-row">
-                <div>
-                  <strong><span lang="zh-Hant">規律身體活動</span><span lang="en">Regular physical activity</span></strong>
-                  <span class="for"><span lang="zh-Hant">降低心血管疾病與死亡風險</span><span lang="en">Lower cardiovascular and all-cause mortality risk</span></span>
-                </div>
-                <span class="grade grade-a" title="Grade A">A</span>
-              </li>
-              <li class="snapshot-row">
-                <div>
-                  <strong><span lang="zh-Hant">GLP-1 類處方藥</span><span lang="en">GLP-1–based prescription medicines</span></strong>
-                  <span class="for"><span lang="zh-Hant">肥胖者的體重減輕</span><span lang="en">Weight loss in people with obesity</span></span>
-                </div>
-                <span class="grade grade-a" title="Grade A">A</span>
-              </li>
-              <li class="snapshot-row">
-                <div>
-                  <strong><span lang="zh-Hant">地中海型飲食</span><span lang="en">Mediterranean-style eating</span></strong>
-                  <span class="for"><span lang="zh-Hant">降低心血管事件</span><span lang="en">Fewer cardiovascular events</span></span>
-                </div>
-                <span class="grade grade-b" title="Grade B">B</span>
-              </li>
-              <li class="snapshot-row">
-                <div>
-                  <strong><span lang="zh-Hant">處方級高純度 EPA</span><span lang="en">Prescription pure EPA</span></strong>
-                  <span class="for"><span lang="zh-Hant">心血管病人減少心血管事件</span><span lang="en">Fewer cardiovascular events in people with heart disease</span></span>
-                </div>
-                <span class="grade grade-a" title="Grade A">A</span>
-              </li>
-              <li class="snapshot-row">
-                <div>
-                  <strong><span lang="zh-Hant">魚油保健食品</span><span lang="en">Fish-oil supplements</span></strong>
-                  <span class="for"><span lang="zh-Hant">一般人預防心臟病</span><span lang="en">Preventing heart disease in the general population</span></span>
-                </div>
-                <span class="grade grade-d" title="Grade D">D</span>
-              </li>
-            </ul>
-            <p class="snapshot-foot">
-              <span lang="zh-Hant">等級依目前主要隨機試驗與統合分析整理；同一種東西用在不同目的、不同族群，等級可能不同。</span>
-              <span lang="en">Grades reflect major randomized trials and meta-analyses. The same product can earn a different grade for a different purpose or population.</span>
-            </p>
-          </aside>
         </div>
       </section>
 
