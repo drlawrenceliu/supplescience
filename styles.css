@@ -949,3 +949,31 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
 @media (max-width: 760px) {
   .hero-actions .hero-tools { display: inline-flex; white-space: normal; text-align: left; }
 }
+
+/* ---------- In-article tool shortcuts ---------- */
+.article-tools { padding: 16px; border: 1.5px solid var(--lime); border-radius: var(--r-lg); background: #f7fbe9; }
+.article-tools-label { margin: 0 0 10px !important; color: var(--brand) !important; font-family: var(--mono); font-size: 12px !important; letter-spacing: 0.1em; }
+.article-tools-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tool-shortcut { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line); text-decoration: none !important; transition: border-color .15s ease, transform .15s ease; }
+.tool-shortcut:hover { border-color: var(--ink); transform: translateY(-1px); }
+.tool-shortcut svg { width: 26px; height: 26px; flex: 0 0 26px; color: var(--brand); }
+.tool-shortcut span:not(.arrow) { display: grid; gap: 1px; flex: 1; min-width: 0; }
+.tool-shortcut strong { color: var(--ink); font-size: 15px; }
+.tool-shortcut small { color: var(--ink-3); font-size: 12.5px; line-height: 1.45; }
+.tool-shortcut .arrow { color: var(--brand); font-family: var(--mono); }
+@media (max-width: 760px) { .article-tools-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Phone header: tools icon ---------- */
+.tools-icon { display: none; width: 40px; height: 40px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--surface); color: var(--ink); place-items: center; }
+.tools-icon svg { width: 18px; height: 18px; }
+.tools-icon[aria-current="page"] { border-color: var(--brand); color: var(--brand); background: var(--brand-tint); }
+@media (max-width: 760px) {
+  .tools-icon { display: grid; }
+  .header-actions { gap: 6px; }
+  .tools-icon, .search-icon, .menu-toggle { width: 38px; height: 38px; }
+  .lang-toggle { min-width: 40px; height: 38px; padding: 0 9px; }
+  .brand-sub { letter-spacing: 0.08em; }
+}
+@media (max-width: 370px) { .brand-sub { font-size: 10px; letter-spacing: 0.04em; } }
+@media (max-width: 760px) { .brand-sub { white-space: nowrap; font-size: 9.5px; letter-spacing: 0.03em; } .brand { min-width: 0; } }
+@media (max-width: 350px) { .brand-sub { display: none; } }

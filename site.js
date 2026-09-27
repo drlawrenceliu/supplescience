@@ -102,6 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-year]").forEach((node) => {
     node.textContent = new Date().getFullYear();
   });
+  // Phone header: one-tap shortcut to the tools page (hidden on desktop via CSS).
+  const actions = document.querySelector(".header-actions");
+  const langButton = actions && actions.querySelector(".lang-toggle");
+  if (langButton && !actions.querySelector(".tools-icon")) {
+    const tools = document.createElement("a");
+    tools.className = "tools-icon";
+    tools.href = "./tools.html";
+    tools.setAttribute("aria-label", "實用工具");
+    tools.title = "實用工具";
+    if (/tools\.html$/.test(location.pathname)) tools.setAttribute("aria-current", "page");
+    tools.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
+    actions.insertBefore(tools, langButton);
+  }
   initMenu();
   initToc();
   initGuideFilter();
