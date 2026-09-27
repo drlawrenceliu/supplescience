@@ -1,4 +1,4 @@
-# SuppleScience / 實證補給
+# Evidence for Living / 實證補給
 
 Evidence-graded health education: 保健食品, GLP-1 and weight management, exercise, and nutrition,
 plus the **21-Day Heart & Metabolism Reset** self-tracking program.

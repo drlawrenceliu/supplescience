@@ -252,7 +252,7 @@ function buildPrintSheet() {
   const lines = node("div", "print-lines");
   for (let i = 0; i < 6; i += 1) lines.append(node("span"));
   sheet.append(lines);
-  sheet.append(node("p", "print-foot", "實證補給 SuppleScience｜本表僅協助整理看診資訊，不能取代醫師的診斷與治療。"));
+  sheet.append(node("p", "print-foot", "實證補給 Evidence for Living｜本表僅協助整理看診資訊，不能取代醫師的診斷與治療。"));
 }
 
 document.addEventListener("DOMContentLoaded", () => {

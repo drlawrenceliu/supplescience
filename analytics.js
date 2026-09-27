@@ -1,6 +1,6 @@
 // Google Analytics 4 — anonymous page-view statistics only.
 // Health entries (weight, doses, check-ins, visit prep) live in localStorage and are never sent.
-// To use a separate GA property for SuppleScience, change GA_ID here only.
+// To use a separate GA property for Evidence for Living, change GA_ID here only.
 (function () {
   var GA_ID = "G-HD804754WT";
   var s = document.createElement("script");

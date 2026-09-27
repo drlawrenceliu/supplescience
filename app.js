@@ -68,7 +68,7 @@ const translations = {
     newRoundConfirm: "Start a new round? This round stays saved on this device and progress restarts at day 1.",
     reminderSaved: "Downloaded. Open the file to add it to your calendar.",
     reminderMissing: "Choose a start date and time first.",
-    reminderTitle: "SuppleScience: today’s 21-day action",
+    reminderTitle: "Evidence for Living: today’s 21-day action",
     reminderBody: "Open the 21-day reset and do today’s 2–10 minute action: ",
   },
 };
@@ -530,10 +530,10 @@ function downloadReminder() {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//SuppleScience//21-Day Reset//ZH-TW",
+    "PRODID:-//Evidence for Living//21-Day Reset//ZH-TW",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
-    `UID:reset-${Date.now()}@supplescience`,
+    `UID:reset-${Date.now()}@evidenceforliving`,
     `DTSTAMP:${stamp}`,
     `DTSTART:${start}`,
     "DURATION:PT10M",
@@ -552,7 +552,7 @@ function downloadReminder() {
   const blob = new Blob([lines.map(icsFold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "supplescience-21-day-reminder.ics";
+  link.download = "evidenceforliving-21-day-reminder.ics";
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -606,7 +606,7 @@ function buildSummary() {
   add("h2", "想和醫師討論的問題");
   const lines2 = add("div", undefined, "print-lines");
   for (let i = 0; i < 3; i += 1) lines2.appendChild(document.createElement("span"));
-  add("p", "紀錄的數字只供自己觀察與和醫療人員討論，本表不做任何解讀，也不能用來自我診斷。實證補給 SuppleScience", "print-foot");
+  add("p", "紀錄的數字只供自己觀察與和醫療人員討論，本表不做任何解讀，也不能用來自我診斷。實證補給 Evidence for Living", "print-foot");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
