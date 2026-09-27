@@ -1017,3 +1017,4 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
   .text-scaled .brand-name { font-size: calc(16px / var(--ts)); }
   .text-scaled .brand-sub { font-size: calc(9.5px / var(--ts)); }
 }
+@media (max-width: 760px) { .text-scaled .brand-sub { font-size: calc(8.6px / var(--ts)); letter-spacing: 0; } .text-scaled .brand { gap: 8px; } }
