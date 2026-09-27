@@ -94,7 +94,26 @@ function initGuideFilter() {
   apply(new URLSearchParams(window.location.search).get("topic") || "all");
 }
 
+// Some in-app browsers (e.g. LINE on Android) enlarge ALL text to follow the phone's font-size setting,
+// which Chrome does not. Measure the real text scale so display text (logo, big headlines, big numbers)
+// can keep its designed size; body text stays enlarged for readability.
+function detectTextScale() {
+  const probe = document.createElement("span");
+  probe.textContent = "一一一一一一一一一一"; // CJK glyphs are 1em wide, so 10 of them at 20px = 200px unscaled
+  probe.style.cssText = "position:absolute;left:-9999px;top:0;font-size:20px;line-height:1;white-space:nowrap;visibility:hidden;letter-spacing:0";
+  document.body.appendChild(probe);
+  const measured = probe.getBoundingClientRect().width / 200;
+  const computed = parseFloat(getComputedStyle(probe).fontSize) / 20;
+  probe.remove();
+  const scale = Math.max(measured, computed);
+  if (scale > 1.05 && scale < 3) {
+    document.documentElement.style.setProperty("--ts", scale.toFixed(3));
+    document.documentElement.classList.add("text-scaled");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  detectTextScale();
   applyLang(getLang());
   document.querySelectorAll(".lang-toggle").forEach((button) => {
     button.addEventListener("click", () => setLang(getLang() === "en" ? "zh" : "en"));

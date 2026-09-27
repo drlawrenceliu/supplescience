@@ -997,3 +997,23 @@ textarea:focus { outline: 0; border-color: var(--brand); box-shadow: 0 0 0 3px r
   .hero-photo-lede { font-size: 16.5px; }
   .hero-photo-actions .btn { flex: 1 1 100%; }
 }
+
+/* ---------- Robustness when a browser enlarges text (e.g. LINE in-app browser + Android font size) ---------- */
+/* Safety: header brand can never run under the buttons; bar labels never hit the caption. */
+.brand { min-width: 0; }
+.brand-text { min-width: 0; overflow: hidden; }
+.brand-name, .brand-sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.feature-art .bars { margin-top: 36px; }
+.feature-art .big { white-space: nowrap; }
+/* When site.js detects enlarged text (--ts = scale), keep display text at its designed size. Body text stays enlarged. */
+.text-scaled .brand-name { font-size: calc(17px / var(--ts)); }
+.text-scaled .brand-sub { font-size: calc(11.5px / var(--ts)); }
+.text-scaled .hero-photo h1 { font-size: calc(clamp(41px, 5.8vw, 77px) / var(--ts)); }
+.text-scaled .article-hero h1 { font-size: calc(clamp(34px, 4.6vw, 54px) / var(--ts)); }
+.text-scaled .feature-art .big { font-size: calc(clamp(54px, 7vw, 90px) / var(--ts)); }
+.text-scaled .feature-body h3 { font-size: calc(clamp(24px, 2.6vw, 32px) / var(--ts)); }
+.text-scaled .reset-hero h1 { font-size: calc(clamp(30px, 4.8vw, 58px) / var(--ts)); }
+@media (max-width: 760px) {
+  .text-scaled .brand-name { font-size: calc(16px / var(--ts)); }
+  .text-scaled .brand-sub { font-size: calc(9.5px / var(--ts)); }
+}
